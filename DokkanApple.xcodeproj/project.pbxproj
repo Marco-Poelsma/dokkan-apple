@@ -12,8 +12,10 @@
 		EF1312712819749E00061056 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF1312702819749E00061056 /* Assets.xcassets */; };
 		EF1312742819749E00061056 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF1312732819749E00061056 /* Preview Assets.xcassets */; };
 		EF131286281974C600061056 /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF131283281974C600061056 /* Sprite.swift */; };
-		EF131288281974C600061056 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF131285281974C600061056 /* Player.swift */; };
 		EF13128D281974F500061056 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF13128C281974F500061056 /* ViewModel.swift */; };
+		EF479F702F718BF20085BC63 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF479F6F2F718BF20085BC63 /* Unit.swift */; };
+		EF479F742F718F5F0085BC63 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF479F732F718F5F0085BC63 /* Team.swift */; };
+		EF479F792F7193380085BC63 /* UnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF479F782F7193380085BC63 /* UnitView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,8 +26,10 @@
 		EF1312732819749E00061056 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EF1312752819749E00061056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF131283281974C600061056 /* Sprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
-		EF131285281974C600061056 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		EF13128C281974F500061056 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		EF479F6F2F718BF20085BC63 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
+		EF479F732F718F5F0085BC63 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
+		EF479F782F7193380085BC63 /* UnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,8 +84,9 @@
 		EF13128A281974CE00061056 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				EF131285281974C600061056 /* Player.swift */,
+				EF479F6F2F718BF20085BC63 /* Unit.swift */,
 				EF131283281974C600061056 /* Sprite.swift */,
+				EF479F732F718F5F0085BC63 /* Team.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -98,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				EF13126E2819749D00061056 /* ContentView.swift */,
+				EF479F782F7193380085BC63 /* UnitView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -172,10 +178,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF13126F2819749D00061056 /* ContentView.swift in Sources */,
+				EF479F742F718F5F0085BC63 /* Team.swift in Sources */,
 				EF131286281974C600061056 /* Sprite.swift in Sources */,
-				EF131288281974C600061056 /* Player.swift in Sources */,
+				EF479F702F718BF20085BC63 /* Unit.swift in Sources */,
 				EF13128D281974F500061056 /* ViewModel.swift in Sources */,
 				EF13126D2819749D00061056 /* FrameByFrameMVVMApp.swift in Sources */,
+				EF479F792F7193380085BC63 /* UnitView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
