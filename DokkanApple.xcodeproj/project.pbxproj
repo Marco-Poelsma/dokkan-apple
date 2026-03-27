@@ -21,6 +21,12 @@
 		EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */; };
 		EF453DA92F76E6E400466E4F /* DokkanAppleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA82F76E6E400466E4F /* DokkanAppleApp.swift */; };
 		EF453DAD2F76E77E00466E4F /* BattleEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DAC2F76E77E00466E4F /* BattleEvent.swift */; };
+		EF453DB82F76EC6D00466E4F /* UnitPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DB72F76EC6D00466E4F /* UnitPosition.swift */; };
+		EF453DBB2F76EE3B00466E4F /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DBA2F76EE3B00466E4F /* Unit.swift */; };
+		EF453DBF2F76EE5700466E4F /* UnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DBE2F76EE5700466E4F /* UnitView.swift */; };
+		EF453DC22F76EE6F00466E4F /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DC12F76EE6F00466E4F /* ArrowView.swift */; };
+		EF453DC52F76EE8C00466E4F /* ArrowsIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DC42F76EE8C00466E4F /* ArrowsIndicator.swift */; };
+		EF453DC82F76EEE800466E4F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DC72F76EEE800466E4F /* Player.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +46,12 @@
 		EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackSlotIndicatorView.swift; sourceTree = "<group>"; };
 		EF453DA82F76E6E400466E4F /* DokkanAppleApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DokkanAppleApp.swift; sourceTree = "<group>"; };
 		EF453DAC2F76E77E00466E4F /* BattleEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleEvent.swift; sourceTree = "<group>"; };
+		EF453DB72F76EC6D00466E4F /* UnitPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitPosition.swift; sourceTree = "<group>"; };
+		EF453DBA2F76EE3B00466E4F /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
+		EF453DBE2F76EE5700466E4F /* UnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitView.swift; sourceTree = "<group>"; };
+		EF453DC12F76EE6F00466E4F /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
+		EF453DC42F76EE8C00466E4F /* ArrowsIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowsIndicator.swift; sourceTree = "<group>"; };
+		EF453DC72F76EEE800466E4F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +106,14 @@
 		EF13128A281974CE00061056 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EF453DB72F76EC6D00466E4F /* UnitPosition.swift */,
 				EF453DAC2F76E77E00466E4F /* BattleEvent.swift */,
 				EF453D902F76E4A200466E4F /* TeamUnit.swift */,
 				EF453D8D2F76E45900466E4F /* Enemy.swift */,
 				EF0339332F71A12200EEB23F /* Sprite.swift */,
+				EF453DBA2F76EE3B00466E4F /* Unit.swift */,
+				EF453DC42F76EE8C00466E4F /* ArrowsIndicator.swift */,
+				EF453DC72F76EEE800466E4F /* Player.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -119,6 +135,8 @@
 				EF453D992F76E52F00466E4F /* HPBarView.swift */,
 				EF453D962F76E4F400466E4F /* QueueUnitView.swift */,
 				EF453D932F76E4DB00466E4F /* TeamUnitView.swift */,
+				EF453DBE2F76EE5700466E4F /* UnitView.swift */,
+				EF453DC12F76EE6F00466E4F /* ArrowView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -192,17 +210,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF453DC22F76EE6F00466E4F /* ArrowView.swift in Sources */,
 				EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */,
 				EF453DA32F76E5FB00466E4F /* BattleView.swift in Sources */,
 				EF453DA02F76E5EB00466E4F /* BattleViewModel.swift in Sources */,
+				EF453DBB2F76EE3B00466E4F /* Unit.swift in Sources */,
 				EF453D912F76E4A200466E4F /* TeamUnit.swift in Sources */,
+				EF453DB82F76EC6D00466E4F /* UnitPosition.swift in Sources */,
 				EF453D9A2F76E52F00466E4F /* HPBarView.swift in Sources */,
 				EF453D8E2F76E45900466E4F /* Enemy.swift in Sources */,
 				EF453DAD2F76E77E00466E4F /* BattleEvent.swift in Sources */,
 				EF0339372F71A12200EEB23F /* Sprite.swift in Sources */,
 				EF453D9D2F76E54A00466E4F /* EventFeedView.swift in Sources */,
 				EF453D972F76E4F400466E4F /* QueueUnitView.swift in Sources */,
+				EF453DBF2F76EE5700466E4F /* UnitView.swift in Sources */,
+				EF453DC52F76EE8C00466E4F /* ArrowsIndicator.swift in Sources */,
 				EF453D942F76E4DB00466E4F /* TeamUnitView.swift in Sources */,
+				EF453DC82F76EEE800466E4F /* Player.swift in Sources */,
 				EF453DA92F76E6E400466E4F /* DokkanAppleApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

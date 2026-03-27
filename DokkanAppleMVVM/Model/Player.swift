@@ -1,12 +1,6 @@
+// Player.swift
 import Foundation
 import SwiftUI
 
-
-class Player: Sprite{
-    
-    /*func moveToPoint(_ point:CGPoint){
-        withAnimation{
-            self.center =  point
-        }
-    }*/
+class Player: Sprite {
 }

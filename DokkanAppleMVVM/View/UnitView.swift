@@ -1,3 +1,4 @@
+// UnitView.swift
 import SwiftUI
 
 struct UnitView: View {
@@ -10,14 +11,14 @@ struct UnitView: View {
             .overlay(
                 VStack(spacing: 4) {
                     Text(getUnitSymbol())
-                        .foregroundColor(.white)
+                        .foregroundColor(Color.white)
                         .font(.title2)
                         .fontWeight(.bold)
                     
                     if unit.isBeingDragged {
                         Image(systemName: "arrow.left.and.right")
                             .font(.caption)
-                            .foregroundColor(.white)
+                            .foregroundColor(Color.white)
                             .opacity(0.8)
                     }
                 }
@@ -25,7 +26,6 @@ struct UnitView: View {
             .shadow(radius: unit.isBeingDragged ? 10 : 3)
             .scaleEffect(unit.isBeingDragged ? 1.05 : 1.0)
             .animation(.easeOut(duration: 0.2), value: unit.isBeingDragged)
-            // Animación suave para cambios de posición
             .animation(.spring(response: 0.5, dampingFraction: 0.7), value: unit.center)
     }
     
