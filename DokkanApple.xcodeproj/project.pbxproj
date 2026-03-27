@@ -26,6 +26,7 @@
 		EF453DA32F76E5FB00466E4F /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA22F76E5FB00466E4F /* BattleView.swift */; };
 		EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */; };
 		EF453DA92F76E6E400466E4F /* DokkanBattleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA82F76E6E400466E4F /* DokkanBattleApp.swift */; };
+		EF453DAD2F76E77E00466E4F /* BattleEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DAC2F76E77E00466E4F /* BattleEvent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		EF453DA22F76E5FB00466E4F /* BattleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleView.swift; sourceTree = "<group>"; };
 		EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackSlotIndicatorView.swift; sourceTree = "<group>"; };
 		EF453DA82F76E6E400466E4F /* DokkanBattleApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DokkanBattleApp.swift; sourceTree = "<group>"; };
+		EF453DAC2F76E77E00466E4F /* BattleEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleEvent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 		EF13128A281974CE00061056 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EF453DAC2F76E77E00466E4F /* BattleEvent.swift */,
 				EF453D902F76E4A200466E4F /* TeamUnit.swift */,
 				EF453D8D2F76E45900466E4F /* Enemy.swift */,
 				EF0339362F71A12200EEB23F /* Player.swift */,
@@ -217,6 +220,7 @@
 				EF0339462F71A15E00EEB23F /* ContentView.swift in Sources */,
 				EF453D9A2F76E52F00466E4F /* HPBarView.swift in Sources */,
 				EF453D8E2F76E45900466E4F /* Enemy.swift in Sources */,
+				EF453DAD2F76E77E00466E4F /* BattleEvent.swift in Sources */,
 				EF0339452F71A15E00EEB23F /* UnitView.swift in Sources */,
 				EF03394B2F71A17100EEB23F /* ViewModel.swift in Sources */,
 				EF0339372F71A12200EEB23F /* Sprite.swift in Sources */,
