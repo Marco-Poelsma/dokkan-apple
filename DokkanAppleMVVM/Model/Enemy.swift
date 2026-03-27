@@ -13,7 +13,7 @@ class Enemy: ObservableObject {
     let color: Color
     
     // Total HP virtual = bars * hpPerBar
-    let hpPerBar: Int = 50_000
+    let hpPerBar: Int = 65_000
     var totalHP: Int { totalBars * hpPerBar }
     @Published var remainingHP: Int
     

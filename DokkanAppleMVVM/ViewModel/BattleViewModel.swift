@@ -177,6 +177,11 @@ class BattleViewModel: ObservableObject {
     
     // MARK: - Animate events one by one
     private func playNextEvent() {
+        // Verificar si el juego ya terminó antes de procesar más eventos
+        if case .gameOver = phase {
+            return
+        }
+        
         guard currentEventIndex < currentEvents.count else {
             // All events done – apply totals and end turn
             finalizeTurn()
@@ -188,6 +193,13 @@ class BattleViewModel: ObservableObject {
         lastEventText = event.description
         
         applyEvent(event)
+        
+        // Verificar si el juego terminó después de aplicar el evento
+        if case .gameOver = phase {
+            // Si el juego terminó, no procesar más eventos
+            animatingEvent = nil
+            return
+        }
         
         // Duration depends on event type
         let delay: Double = {
@@ -201,6 +213,11 @@ class BattleViewModel: ObservableObject {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
             guard let self = self else { return }
+            // Verificar nuevamente si el juego terminó antes de continuar
+            if case .gameOver = self.phase {
+                self.animatingEvent = nil
+                return
+            }
             self.currentEventIndex += 1
             self.animatingEvent = nil
             self.playNextEvent()
@@ -221,6 +238,7 @@ class BattleViewModel: ObservableObject {
             }
         }
         
+        // Verificar game over después de cada evento
         checkGameOver()
     }
     
@@ -253,10 +271,11 @@ class BattleViewModel: ObservableObject {
     }
     
     private func finalizeTurn() {
-        if case .resolving = phase {
+        // Solo avanzar turno si el juego no ha terminado
+        if case .resolving = phase, !enemy.isDead && teamHP > 0 {
             phase = .idle
+            advanceTurn()
         }
-        advanceTurn()
     }
     
     // MARK: - Restart
@@ -303,7 +322,6 @@ class BattleViewModel: ObservableObject {
         objectWillChange.send()
     }
     
-    // CORREGIDO: Cambiar Unit a TeamUnit
     private func checkAndSwap(draggedUnit: TeamUnit, offset: CGFloat) {
         let visualX = slotXFor(draggedUnit) + offset
         guard abs(offset) > swapThreshold,
@@ -313,7 +331,6 @@ class BattleViewModel: ObservableObject {
         objectWillChange.send()
     }
     
-    // CORREGIDO: Cambiar Unit a TeamUnit
     private func swapUnits(_ a: TeamUnit, _ b: TeamUnit) {
         guard let ai = activeSlotIndices.firstIndex(where: { roster[$0].id == a.id }),
               let bi = activeSlotIndices.firstIndex(where: { roster[$0].id == b.id }) else { return }
@@ -325,14 +342,12 @@ class BattleViewModel: ObservableObject {
         #endif
     }
     
-    // CORREGIDO: Cambiar Unit a TeamUnit
     private func slotXFor(_ unit: TeamUnit) -> CGFloat {
         let positions = [UnitPosition.left, .center, .right]
         let slotIdx = activeSlotIndices.firstIndex(where: { roster[$0].id == unit.id }) ?? 1
         return positions[min(slotIdx, 2)].xPosition(in: screenWidth)
     }
     
-    // CORREGIDO: Cambiar Unit? a TeamUnit?
     private func closestActiveSlot(to x: CGFloat, excluding excluded: TeamUnit?) -> TeamUnit? {
         let positions = [UnitPosition.left, .center, .right]
         var best: (unit: TeamUnit, dist: CGFloat)? = nil
@@ -361,7 +376,6 @@ class BattleViewModel: ObservableObject {
     }
     
     // MARK: - Enemy attack display helpers
-    /// How many enemy attacks land before/after each active slot index (0 = before slot0, 1 = after slot0...)
     func enemyAttackCount(atSlot slot: Int) -> Int {
         enemyAttackSlots.filter { $0 == slot }.count
     }
