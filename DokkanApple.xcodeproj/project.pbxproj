@@ -111,10 +111,6 @@
 		EF131290281974FD00061056 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				EF453D9C2F76E54A00466E4F /* EventFeedView.swift */,
-				EF453D992F76E52F00466E4F /* HPBarView.swift */,
-				EF453D962F76E4F400466E4F /* QueueUnitView.swift */,
-				EF453D932F76E4DB00466E4F /* TeamUnitView.swift */,
 				EF03394A2F71A17100EEB23F /* ViewModel.swift */,
 			);
 			path = ViewModel;
@@ -123,6 +119,10 @@
 		EF1312922819760900061056 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EF453D9C2F76E54A00466E4F /* EventFeedView.swift */,
+				EF453D992F76E52F00466E4F /* HPBarView.swift */,
+				EF453D962F76E4F400466E4F /* QueueUnitView.swift */,
+				EF453D932F76E4DB00466E4F /* TeamUnitView.swift */,
 				EF0339442F71A15E00EEB23F /* ContentView.swift */,
 				EF0339432F71A15E00EEB23F /* UnitView.swift */,
 			);
