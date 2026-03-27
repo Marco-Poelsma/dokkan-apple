@@ -20,6 +20,7 @@
 		EF453D8E2F76E45900466E4F /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D8D2F76E45900466E4F /* Enemy.swift */; };
 		EF453D912F76E4A200466E4F /* TeamUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D902F76E4A200466E4F /* TeamUnit.swift */; };
 		EF453D942F76E4DB00466E4F /* TeamUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D932F76E4DB00466E4F /* TeamUnitView.swift */; };
+		EF453D972F76E4F400466E4F /* QueueUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D962F76E4F400466E4F /* QueueUnitView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		EF453D8D2F76E45900466E4F /* Enemy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
 		EF453D902F76E4A200466E4F /* TeamUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamUnit.swift; sourceTree = "<group>"; };
 		EF453D932F76E4DB00466E4F /* TeamUnitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamUnitView.swift; sourceTree = "<group>"; };
+		EF453D962F76E4F400466E4F /* QueueUnitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueUnitView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 		EF131290281974FD00061056 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				EF453D962F76E4F400466E4F /* QueueUnitView.swift */,
 				EF453D932F76E4DB00466E4F /* TeamUnitView.swift */,
 				EF03394A2F71A17100EEB23F /* ViewModel.swift */,
 			);
@@ -199,6 +202,7 @@
 				EF0339452F71A15E00EEB23F /* UnitView.swift in Sources */,
 				EF03394B2F71A17100EEB23F /* ViewModel.swift in Sources */,
 				EF0339372F71A12200EEB23F /* Sprite.swift in Sources */,
+				EF453D972F76E4F400466E4F /* QueueUnitView.swift in Sources */,
 				EF453D942F76E4DB00466E4F /* TeamUnitView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
