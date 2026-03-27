@@ -56,6 +56,7 @@ struct EventFeedView: View {
                 .shadow(color: shadowColor(ev), radius: 12, x: 0, y: 4)
         )
         .padding(.horizontal, 16)
+        .padding(.bottom, 100)
     }
     
     private func isSA(_ ev: BattleEvent) -> Bool {

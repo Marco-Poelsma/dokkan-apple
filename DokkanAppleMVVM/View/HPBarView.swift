@@ -39,13 +39,13 @@ struct TeamHPBarView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .fill(barColor)
                         .frame(width: geo.size.width * CGFloat(fraction))
-                        .animation(.easeOut(duration: 0.4), value: fraction)
+                        .animation(.easeOut(duration: 0.4))
                 }
             }
             .frame(height: 12)
         }
         .offset(x: shake ? CGFloat.random(in: -4...4) : 0)
-        .animation(shake ? Animation.easeInOut(duration: 0.05).repeatCount(5, autoreverses: true) : .default, value: shake)
+        .animation(shake ? Animation.easeInOut(duration: 0.05).repeatCount(5, autoreverses: true) : .default)
     }
 }
 
@@ -68,7 +68,8 @@ struct EnemyHPBarsView: View {
             }
             
             HStack(spacing: 3) {
-                ForEach(0..<enemy.totalBars, id: \.self) { barIdx in
+                // CORREGIDO: Mostrar las barras en orden inverso (de derecha a izquierda)
+                ForEach(Array((0..<enemy.totalBars)), id: \.self) { barIdx in
                     EnemyBarSegment(
                         barIndex: barIdx,
                         currentBars: enemy.currentBars,
@@ -81,7 +82,7 @@ struct EnemyHPBarsView: View {
             }
         }
         .offset(x: shake ? CGFloat.random(in: -3...3) : 0)
-        .animation(shake ? Animation.easeInOut(duration: 0.04).repeatCount(6, autoreverses: true) : .default, value: shake)
+        .animation(shake ? Animation.easeInOut(duration: 0.04).repeatCount(6, autoreverses: true) : .default)
     }
 }
 
@@ -93,13 +94,17 @@ struct EnemyBarSegment: View {
     let enemyColor: Color
     let flashHit: Bool
     
-    // barIndex 0 = rightmost bar (last to deplete) actually we'll treat index 0 = first = leftmost = depletes last
-    // Actually: bar at index (totalBars-1) depletes first
-    var depletionOrder: Int { totalBars - 1 - barIndex }   // 0 = first to go
+    // Ahora el índice 0 es la barra más a la derecha (la primera en vaciarse)
+    var barNumber: Int { barIndex }  // 0 = derecha, 9 = izquierda
     
     var state: BarState {
-        if depletionOrder >= currentBars { return .empty }
-        if depletionOrder == currentBars - 1 { return .partial }
+        // Las barras se vacían desde la derecha (índice 0 es la primera)
+        if barNumber >= currentBars {
+            return .empty
+        }
+        if barNumber == currentBars - 1 {
+            return .partial
+        }
         return .full
     }
     
@@ -120,7 +125,7 @@ struct EnemyBarSegment: View {
                     RoundedRectangle(cornerRadius: 3)
                         .fill(enemyColor)
                         .frame(width: geo.size.width * CGFloat(currentBarFraction))
-                        .animation(.easeOut(duration: 0.35), value: currentBarFraction)
+                        .animation(.easeOut(duration: 0.35))
                         .overlay(flashHit ? RoundedRectangle(cornerRadius: 3).fill(Color.white.opacity(0.5)) : nil)
                 case .empty:
                     EmptyView()
@@ -128,6 +133,6 @@ struct EnemyBarSegment: View {
             }
         }
         .frame(height: 14)
-        .animation(.easeOut(duration: 0.3), value: state == .empty)
+        .animation(.easeOut(duration: 0.3))
     }
 }
