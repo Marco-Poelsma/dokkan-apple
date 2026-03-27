@@ -18,6 +18,7 @@
 		EF1312712819749E00061056 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF1312702819749E00061056 /* Assets.xcassets */; };
 		EF1312742819749E00061056 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF1312732819749E00061056 /* Preview Assets.xcassets */; };
 		EF453D8E2F76E45900466E4F /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D8D2F76E45900466E4F /* Enemy.swift */; };
+		EF453D912F76E4A200466E4F /* TeamUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D902F76E4A200466E4F /* TeamUnit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		EF1312732819749E00061056 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EF1312752819749E00061056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF453D8D2F76E45900466E4F /* Enemy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
+		EF453D902F76E4A200466E4F /* TeamUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamUnit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 		EF13128A281974CE00061056 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EF453D902F76E4A200466E4F /* TeamUnit.swift */,
 				EF453D8D2F76E45900466E4F /* Enemy.swift */,
 				EF0339362F71A12200EEB23F /* Player.swift */,
 				EF0339332F71A12200EEB23F /* Sprite.swift */,
@@ -185,6 +188,7 @@
 			files = (
 				EF03393A2F71A12200EEB23F /* Player.swift in Sources */,
 				EF0339382F71A12200EEB23F /* Team.swift in Sources */,
+				EF453D912F76E4A200466E4F /* TeamUnit.swift in Sources */,
 				EF0339392F71A12200EEB23F /* Unit.swift in Sources */,
 				EF0339302F71A10D00EEB23F /* FrameByFrameMVVMApp.swift in Sources */,
 				EF0339462F71A15E00EEB23F /* ContentView.swift in Sources */,
