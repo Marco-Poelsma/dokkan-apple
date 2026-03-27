@@ -24,11 +24,11 @@ struct TeamHPBarView: View {
             HStack {
                 Text("TEAM HP")
                     .font(.system(size: 9, weight: .black, design: .rounded))
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(Color.white.opacity(0.7))
                 Spacer()
-                Text("\(current.formatted()) / \(max.formatted())")
+                Text("\(current) / \(max)")
                     .font(.system(size: 9, weight: .bold, design: .monospaced))
-                    .foregroundColor(.white.opacity(0.8))
+                    .foregroundColor(Color.white.opacity(0.8))
             }
             
             GeometryReader { geo in
@@ -62,9 +62,9 @@ struct EnemyHPBarsView: View {
                     .font(.system(size: 11, weight: .black, design: .rounded))
                     .foregroundColor(enemy.color)
                 Spacer()
-                Text("\(enemy.remainingHP.formatted()) HP")
+                Text("\(enemy.remainingHP) HP")
                     .font(.system(size: 9, weight: .bold, design: .monospaced))
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(Color.white.opacity(0.7))
             }
             
             HStack(spacing: 3) {

@@ -19,16 +19,16 @@ struct QueueUnitView: View {
             VStack(spacing: 2) {
                 Text(unit.symbol)
                     .font(.system(size: 13, weight: .black, design: .rounded))
-                    .foregroundColor(.white.opacity(0.65))
+                    .foregroundColor(Color.white.opacity(0.65))
                 
                 Text(unit.name)
                     .font(.system(size: 7, weight: .semibold, design: .rounded))
-                    .foregroundColor(.white.opacity(0.5))
+                    .foregroundColor(Color.white.opacity(0.5))
                     .lineLimit(1)
                 
                 Text(unit.archetype.rawValue)
                     .font(.system(size: 6, weight: .bold))
-                    .foregroundColor(.white.opacity(0.4))
+                    .foregroundColor(Color.white.opacity(0.4))
                     .lineLimit(1)
             }
             .padding(4)

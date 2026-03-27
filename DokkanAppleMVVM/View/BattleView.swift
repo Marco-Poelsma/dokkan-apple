@@ -34,7 +34,7 @@ struct BattleView: View {
             
             // ── SA flash ─────────────────────────────────────────────────
             if isSAFlashing {
-                SAFlashView(color: .yellow)
+                SAFlashView(color: Color.yellow)
                     .allowsHitTesting(false)
             }
             
@@ -85,7 +85,7 @@ struct BattleView: View {
                 VStack { Spacer()
                     Text(vm.lastEventText)
                         .font(.system(size: 10, weight: .semibold, design: .rounded))
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundColor(Color.white.opacity(0.6))
                         .padding(.bottom, unitBottomOffset - 20)
                 }
                 .allowsHitTesting(false)
@@ -102,11 +102,11 @@ struct BattleView: View {
     // MARK: - Background
     var backgroundGradient: some View {
         LinearGradient(
-            colors: [
+            gradient: Gradient(colors: [
                 Color(red: 0.04, green: 0.05, blue: 0.15),
                 Color(red: 0.07, green: 0.09, blue: 0.22),
                 Color(red: 0.04, green: 0.05, blue: 0.15)
-            ],
+            ]),
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
@@ -120,7 +120,7 @@ struct BattleView: View {
             HStack {
                 Text("TURN \(vm.turnNumber)")
                     .font(.system(size: 11, weight: .black, design: .rounded))
-                    .foregroundColor(.white.opacity(0.5))
+                    .foregroundColor(Color.white.opacity(0.5))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 3)
                     .background(Color.white.opacity(0.08))
@@ -145,15 +145,16 @@ struct BattleView: View {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(
                         LinearGradient(
-                            colors: [vm.enemy.color.opacity(0.9), vm.enemy.color.opacity(0.6)],
-                            startPoint: .topLeading, endPoint: .bottomTrailing
+                            gradient: Gradient(colors: [vm.enemy.color.opacity(0.9), vm.enemy.color.opacity(0.6)]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
                         )
                     )
                     .frame(width: 90, height: 90)
                     .overlay(
                         Text(vm.enemy.name.prefix(1))
                             .font(.system(size: 44, weight: .black, design: .rounded))
-                            .foregroundColor(.white.opacity(0.9))
+                            .foregroundColor(Color.white.opacity(0.9))
                     )
                     .shadow(color: vm.enemy.color.opacity(0.6), radius: vm.showEnemyHit ? 20 : 8)
                     .scaleEffect(vm.enemyShake ? 0.93 : 1.0)
@@ -212,7 +213,7 @@ struct BattleView: View {
                     VStack(spacing: 2) {
                         Text("#\(item.index + 1)")
                             .font(.system(size: 7, weight: .bold, design: .monospaced))
-                            .foregroundColor(.white.opacity(0.3))
+                            .foregroundColor(Color.white.opacity(0.3))
                         QueueUnitView(unit: item.unit, queuePosition: item.index)
                     }
                 }
@@ -251,14 +252,14 @@ struct BattleView: View {
                         .font(.system(size: 15, weight: .black, design: .rounded))
                         .kerning(1.2)
                 }
-                .foregroundColor(.black)
+                .foregroundColor(Color.black)
                 .padding(.horizontal, 28)
                 .padding(.vertical, 14)
                 .background(
                     Capsule()
                         .fill(
                             LinearGradient(
-                                colors: [Color.yellow, Color(red: 1.0, green: 0.7, blue: 0.1)],
+                                gradient: Gradient(colors: [Color.yellow, Color(red: 1.0, green: 0.7, blue: 0.1)]),
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
@@ -279,16 +280,16 @@ struct BattleView: View {
             VStack(spacing: 24) {
                 Text(won ? "🏆 VICTORY!" : "💀 GAME OVER")
                     .font(.system(size: 36, weight: .black, design: .rounded))
-                    .foregroundColor(won ? .yellow : .red)
+                    .foregroundColor(won ? Color.yellow : Color.red)
                 
                 Text(won ? "Enemy defeated!" : "Your team was wiped out!")
                     .font(.system(size: 16, weight: .semibold, design: .rounded))
-                    .foregroundColor(.white.opacity(0.8))
+                    .foregroundColor(Color.white.opacity(0.8))
                 
                 Button(action: { vm.restart() }) {
                     Text("PLAY AGAIN")
                         .font(.system(size: 16, weight: .black, design: .rounded))
-                        .foregroundColor(.black)
+                        .foregroundColor(Color.black)
                         .padding(.horizontal, 36)
                         .padding(.vertical, 16)
                         .background(Capsule().fill(won ? Color.yellow : Color.red))

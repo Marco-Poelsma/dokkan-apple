@@ -30,10 +30,10 @@ struct BattleEvent: Identifiable {
             if dodged { return "\(u.name): Miss!" }
             let prefix = t == .superAttack ? "⚡SA" : t == .additionalAttack ? "➕AA" : "⚔"
             let critStr = crit ? " CRIT!" : ""
-            return "\(prefix) \(u.name): \(dmg.formatted())\(critStr)"
+            return "\(prefix) \(u.name): \(dmg)\(critStr)"
         case .enemyAttacks(_, let target, let dmg, let dodged):
             if dodged { return "💨 \(target.name) dodged!" }
-            return "💥 Enemy → \(target.name): \(dmg.formatted())"
+            return "💥 Enemy → \(target.name): \(dmg)"
         }
     }
 }

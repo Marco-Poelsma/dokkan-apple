@@ -8,12 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		EF0339372F71A12200EEB23F /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339332F71A12200EEB23F /* Sprite.swift */; };
-		EF0339382F71A12200EEB23F /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339342F71A12200EEB23F /* Team.swift */; };
-		EF0339392F71A12200EEB23F /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339352F71A12200EEB23F /* Unit.swift */; };
-		EF03393A2F71A12200EEB23F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339362F71A12200EEB23F /* Player.swift */; };
-		EF0339452F71A15E00EEB23F /* UnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339432F71A15E00EEB23F /* UnitView.swift */; };
-		EF0339462F71A15E00EEB23F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339442F71A15E00EEB23F /* ContentView.swift */; };
-		EF03394B2F71A17100EEB23F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF03394A2F71A17100EEB23F /* ViewModel.swift */; };
 		EF1312712819749E00061056 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF1312702819749E00061056 /* Assets.xcassets */; };
 		EF1312742819749E00061056 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF1312732819749E00061056 /* Preview Assets.xcassets */; };
 		EF453D8E2F76E45900466E4F /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D8D2F76E45900466E4F /* Enemy.swift */; };
@@ -25,18 +19,12 @@
 		EF453DA02F76E5EB00466E4F /* BattleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D9F2F76E5EB00466E4F /* BattleViewModel.swift */; };
 		EF453DA32F76E5FB00466E4F /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA22F76E5FB00466E4F /* BattleView.swift */; };
 		EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */; };
-		EF453DA92F76E6E400466E4F /* DokkanBattleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA82F76E6E400466E4F /* DokkanBattleApp.swift */; };
+		EF453DA92F76E6E400466E4F /* DokkanAppleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA82F76E6E400466E4F /* DokkanAppleApp.swift */; };
 		EF453DAD2F76E77E00466E4F /* BattleEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DAC2F76E77E00466E4F /* BattleEvent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		EF0339332F71A12200EEB23F /* Sprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sprite.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/Model/Sprite.swift"; sourceTree = "<group>"; };
-		EF0339342F71A12200EEB23F /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Team.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/Model/Team.swift"; sourceTree = "<group>"; };
-		EF0339352F71A12200EEB23F /* Unit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Unit.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/Model/Unit.swift"; sourceTree = "<group>"; };
-		EF0339362F71A12200EEB23F /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/Model/Player.swift"; sourceTree = "<group>"; };
-		EF0339432F71A15E00EEB23F /* UnitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnitView.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/View/UnitView.swift"; sourceTree = "<group>"; };
-		EF0339442F71A15E00EEB23F /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/View/ContentView.swift"; sourceTree = "<group>"; };
-		EF03394A2F71A17100EEB23F /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewModel.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/ViewModel/ViewModel.swift"; sourceTree = "<group>"; };
 		EF1312692819749D00061056 /* DokkanApple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DokkanApple.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF1312702819749E00061056 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EF1312732819749E00061056 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -50,7 +38,7 @@
 		EF453D9F2F76E5EB00466E4F /* BattleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleViewModel.swift; sourceTree = "<group>"; };
 		EF453DA22F76E5FB00466E4F /* BattleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleView.swift; sourceTree = "<group>"; };
 		EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackSlotIndicatorView.swift; sourceTree = "<group>"; };
-		EF453DA82F76E6E400466E4F /* DokkanBattleApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DokkanBattleApp.swift; sourceTree = "<group>"; };
+		EF453DA82F76E6E400466E4F /* DokkanAppleApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DokkanAppleApp.swift; sourceTree = "<group>"; };
 		EF453DAC2F76E77E00466E4F /* BattleEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleEvent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,7 +56,7 @@
 		EF1312602819749D00061056 = {
 			isa = PBXGroup;
 			children = (
-				EF13126B2819749D00061056 /* FrameByFrameMVVM */,
+				EF13126B2819749D00061056 /* DokkanAppleMVVM */,
 				EF13126A2819749D00061056 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,10 +69,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EF13126B2819749D00061056 /* FrameByFrameMVVM */ = {
+		EF13126B2819749D00061056 /* DokkanAppleMVVM */ = {
 			isa = PBXGroup;
 			children = (
-				EF453DA82F76E6E400466E4F /* DokkanBattleApp.swift */,
+				EF453DA82F76E6E400466E4F /* DokkanAppleApp.swift */,
 				EF13128A281974CE00061056 /* Model */,
 				EF1312922819760900061056 /* View */,
 				EF131290281974FD00061056 /* ViewModel */,
@@ -92,7 +80,7 @@
 				EF1312752819749E00061056 /* Info.plist */,
 				EF1312722819749E00061056 /* Preview Content */,
 			);
-			path = FrameByFrameMVVM;
+			path = DokkanAppleMVVM;
 			sourceTree = "<group>";
 		};
 		EF1312722819749E00061056 /* Preview Content */ = {
@@ -109,10 +97,7 @@
 				EF453DAC2F76E77E00466E4F /* BattleEvent.swift */,
 				EF453D902F76E4A200466E4F /* TeamUnit.swift */,
 				EF453D8D2F76E45900466E4F /* Enemy.swift */,
-				EF0339362F71A12200EEB23F /* Player.swift */,
 				EF0339332F71A12200EEB23F /* Sprite.swift */,
-				EF0339342F71A12200EEB23F /* Team.swift */,
-				EF0339352F71A12200EEB23F /* Unit.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -121,7 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				EF453D9F2F76E5EB00466E4F /* BattleViewModel.swift */,
-				EF03394A2F71A17100EEB23F /* ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -135,8 +119,6 @@
 				EF453D992F76E52F00466E4F /* HPBarView.swift */,
 				EF453D962F76E4F400466E4F /* QueueUnitView.swift */,
 				EF453D932F76E4DB00466E4F /* TeamUnitView.swift */,
-				EF0339442F71A15E00EEB23F /* ContentView.swift */,
-				EF0339432F71A15E00EEB23F /* UnitView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -210,24 +192,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF03393A2F71A12200EEB23F /* Player.swift in Sources */,
-				EF0339382F71A12200EEB23F /* Team.swift in Sources */,
 				EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */,
 				EF453DA32F76E5FB00466E4F /* BattleView.swift in Sources */,
 				EF453DA02F76E5EB00466E4F /* BattleViewModel.swift in Sources */,
 				EF453D912F76E4A200466E4F /* TeamUnit.swift in Sources */,
-				EF0339392F71A12200EEB23F /* Unit.swift in Sources */,
-				EF0339462F71A15E00EEB23F /* ContentView.swift in Sources */,
 				EF453D9A2F76E52F00466E4F /* HPBarView.swift in Sources */,
 				EF453D8E2F76E45900466E4F /* Enemy.swift in Sources */,
 				EF453DAD2F76E77E00466E4F /* BattleEvent.swift in Sources */,
-				EF0339452F71A15E00EEB23F /* UnitView.swift in Sources */,
-				EF03394B2F71A17100EEB23F /* ViewModel.swift in Sources */,
 				EF0339372F71A12200EEB23F /* Sprite.swift in Sources */,
 				EF453D9D2F76E54A00466E4F /* EventFeedView.swift in Sources */,
 				EF453D972F76E4F400466E4F /* QueueUnitView.swift in Sources */,
 				EF453D942F76E4DB00466E4F /* TeamUnitView.swift in Sources */,
-				EF453DA92F76E6E400466E4F /* DokkanBattleApp.swift in Sources */,
+				EF453DA92F76E6E400466E4F /* DokkanAppleApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,7 +332,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"FrameByFrameMVVM/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"DokkanAppleMVVM/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = FrameByFrameMVVM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -377,7 +353,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"FrameByFrameMVVM/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"DokkanAppleMVVM/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = FrameByFrameMVVM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

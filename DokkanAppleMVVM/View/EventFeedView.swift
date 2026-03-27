@@ -34,25 +34,25 @@ struct TeamUnitView: View {
                 // Symbol / letter
                 Text(unit.symbol)
                     .font(.system(size: 20, weight: .black, design: .rounded))
-                    .foregroundColor(.white)
+                    .foregroundColor(Color.white)
                 
                 // Name
                 Text(unit.name)
                     .font(.system(size: 9, weight: .semibold, design: .rounded))
-                    .foregroundColor(.white.opacity(0.9))
+                    .foregroundColor(Color.white.opacity(0.9))
                     .lineLimit(1)
                 
                 Divider().background(Color.white.opacity(0.3)).padding(.horizontal, 6)
                 
                 // ATK
-                statRow(label: "ATK", value: shortNum(unit.effectiveAtk), color: .yellow)
+                statRow(label: "ATK", value: shortNum(unit.effectiveAtk), color: Color.yellow)
                 // DEF
-                statRow(label: "DEF", value: shortNum(unit.effectiveDef), color: .cyan)
+                statRow(label: "DEF", value: shortNum(unit.effectiveDef), color: Color.cyan)
                 
                 // Archetype badge
                 Text(unit.archetype.rawValue)
                     .font(.system(size: 7, weight: .bold, design: .rounded))
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(Color.white.opacity(0.7))
                     .padding(.horizontal, 4)
                     .padding(.vertical, 1)
                     .background(Color.white.opacity(0.15))
@@ -62,7 +62,7 @@ struct TeamUnitView: View {
                 if unit.saEffect != .none {
                     Text(unit.saEffect.rawValue)
                         .font(.system(size: 7, weight: .bold))
-                        .foregroundColor(.orange)
+                        .foregroundColor(Color.orange)
                 }
             }
             .padding(5)
@@ -82,7 +82,7 @@ struct TeamUnitView: View {
             Spacer()
             Text(value)
                 .font(.system(size: 8, weight: .black, design: .monospaced))
-                .foregroundColor(.white)
+                .foregroundColor(Color.white)
         }
         .padding(.horizontal, 5)
     }
