@@ -267,7 +267,7 @@ struct BattleView: View {
                 )
                 .shadow(color: Color.yellow.opacity(0.5), radius: 12, x: 0, y: 4)
             }
-            .padding(.bottom, unitBottomOffset + 10)
+            .padding(.bottom, unitBottomOffset + 100)
         }
         .allowsHitTesting(true)
     }
