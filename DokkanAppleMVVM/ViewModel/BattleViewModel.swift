@@ -296,25 +296,27 @@ class BattleViewModel: ObservableObject {
         // Snap to nearest active slot
         let visualX = slotXFor(unit) + unit.dragOffset
         if let best = closestActiveSlot(to: visualX, excluding: unit) {
-            swapUnits(unit, with: best)
+            swapUnits(unit, best)
         }
         unit.endDrag()
         draggedUnitId = nil
         objectWillChange.send()
     }
     
-    private func checkAndSwap(draggedUnit: Unit, offset: CGFloat) {
+    // CORREGIDO: Cambiar Unit a TeamUnit
+    private func checkAndSwap(draggedUnit: TeamUnit, offset: CGFloat) {
         let visualX = slotXFor(draggedUnit) + offset
         guard abs(offset) > swapThreshold,
               let target = closestActiveSlot(to: visualX, excluding: draggedUnit) else { return }
-        swapUnits(draggedUnit, with: target)
+        swapUnits(draggedUnit, target)
         draggedUnit.dragOffset = 0
         objectWillChange.send()
     }
     
-    private func swapUnits(_ a: Unit, _ b: Unit) {
-        guard let ai = activeSlotIndices.firstIndex(where: { roster[$0].id == (a as? TeamUnit)?.id }),
-              let bi = activeSlotIndices.firstIndex(where: { roster[$0].id == (b as? TeamUnit)?.id }) else { return }
+    // CORREGIDO: Cambiar Unit a TeamUnit
+    private func swapUnits(_ a: TeamUnit, _ b: TeamUnit) {
+        guard let ai = activeSlotIndices.firstIndex(where: { roster[$0].id == a.id }),
+              let bi = activeSlotIndices.firstIndex(where: { roster[$0].id == b.id }) else { return }
         let ri = activeSlotIndices[ai]
         let rj = activeSlotIndices[bi]
         roster.swapAt(ri, rj)
@@ -323,19 +325,21 @@ class BattleViewModel: ObservableObject {
         #endif
     }
     
-    private func slotXFor(_ unit: Unit) -> CGFloat {
+    // CORREGIDO: Cambiar Unit a TeamUnit
+    private func slotXFor(_ unit: TeamUnit) -> CGFloat {
         let positions = [UnitPosition.left, .center, .right]
-        let slotIdx = activeSlotIndices.firstIndex(where: { roster[$0].id == (unit as? TeamUnit)?.id }) ?? 1
+        let slotIdx = activeSlotIndices.firstIndex(where: { roster[$0].id == unit.id }) ?? 1
         return positions[min(slotIdx, 2)].xPosition(in: screenWidth)
     }
     
-    private func closestActiveSlot(to x: CGFloat, excluding excluded: Unit?) -> TeamUnit? {
+    // CORREGIDO: Cambiar Unit? a TeamUnit?
+    private func closestActiveSlot(to x: CGFloat, excluding excluded: TeamUnit?) -> TeamUnit? {
         let positions = [UnitPosition.left, .center, .right]
         var best: (unit: TeamUnit, dist: CGFloat)? = nil
         
         for (i, rosterIdx) in activeSlotIndices.enumerated() {
             let unit = roster[rosterIdx]
-            if unit.id == (excluded as? TeamUnit)?.id { continue }
+            if unit.id == excluded?.id { continue }
             let px = positions[i].xPosition(in: screenWidth)
             let d = abs(px - x)
             if best == nil || d < best!.dist { best = (unit, d) }

@@ -4,7 +4,7 @@
 import SwiftUI
 
 @main
-struct DokkanApple: App {
+struct Dokkan: App {
     @StateObject var battleVM = BattleViewModel()
     
     var body: some Scene {

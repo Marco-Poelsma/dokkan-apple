@@ -1,95 +1,127 @@
-// TeamUnitView.swift
-// Vista de cada unidad arrastrable en el turno activo
+// EventFeedView.swift
+// Overlay que muestra el evento de combate actual animado
 
 import SwiftUI
 
-struct TeamUnitView: View {
-    let unit: TeamUnit
-    let slotIndex: Int          // 0, 1, 2
-    let isAnimatingEvent: Bool
-    let isHit: Bool
-    
-    @EnvironmentObject var vm: BattleViewModel
+struct EventFeedView: View {
+    let event: BattleEvent?
     
     var body: some View {
-        ZStack {
-            // --- Card background ---
-            RoundedRectangle(cornerRadius: 14)
-                .fill(unit.color.opacity(unit.isBeingDragged ? 1.0 : 0.92))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14)
-                        .strokeBorder(unit.isBeingDragged ? Color.white : Color.white.opacity(0.3), lineWidth: unit.isBeingDragged ? 2.5 : 1)
-                )
-                .shadow(color: unit.color.opacity(0.7), radius: unit.isBeingDragged ? 16 : 6, x: 0, y: 4)
+        if let ev = event {
+            eventCard(ev)
+                .transition(.asymmetric(
+                    insertion: AnyTransition.move(edge: Edge.top).combined(with: .opacity),
+                    removal: .opacity
+                ))
+                .id(ev.id)
+                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: event?.id)
+        } else {
+            Color.clear
+                .frame(height: 0)
+                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: event?.id)
+        }
+    }
+    
+    private func eventCard(_ ev: BattleEvent) -> some View {
+        HStack(spacing: 8) {
+            // Icon
+            Image(systemName: iconName(ev))
+                .font(.system(size: 18, weight: .black))
+                .foregroundColor(iconColor(ev))
             
-            // Hit flash overlay
-            if isHit {
-                RoundedRectangle(cornerRadius: 14)
-                    .fill(Color.red.opacity(0.6))
-                    .transition(.opacity)
+            Text(ev.description)
+                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .foregroundColor(Color.white)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+            
+            Spacer()
+            
+            // SA glow badge
+            if isSA(ev) {
+                Text("SA!")
+                    .font(.system(size: 11, weight: .black, design: .rounded))
+                    .foregroundColor(Color.black)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Color.yellow)
+                    .cornerRadius(8)
             }
-            
-            // --- Content ---
-            VStack(spacing: 3) {
-                // Symbol / letter
-                Text(unit.symbol)
-                    .font(.system(size: 20, weight: .black, design: .rounded))
-                    .foregroundColor(Color.white)
-                
-                // Name
-                Text(unit.name)
-                    .font(.system(size: 9, weight: .semibold, design: .rounded))
-                    .foregroundColor(Color.white.opacity(0.9))
-                    .lineLimit(1)
-                
-                Divider().background(Color.white.opacity(0.3)).padding(.horizontal, 6)
-                
-                // ATK
-                statRow(label: "ATK", value: shortNum(unit.effectiveAtk), color: Color.yellow)
-                // DEF
-                statRow(label: "DEF", value: shortNum(unit.effectiveDef), color: Color.cyan)
-                
-                // Archetype badge
-                Text(unit.archetype.rawValue)
-                    .font(.system(size: 7, weight: .bold, design: .rounded))
-                    .foregroundColor(Color.white.opacity(0.7))
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 1)
-                    .background(Color.white.opacity(0.15))
-                    .cornerRadius(4)
-                
-                // SA effect
-                if unit.saEffect != .none {
-                    Text(unit.saEffect.rawValue)
-                        .font(.system(size: 7, weight: .bold))
-                        .foregroundColor(Color.orange)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(cardBackground(ev))
+                .shadow(color: shadowColor(ev), radius: 12, x: 0, y: 4)
+        )
+        .padding(.horizontal, 16)
+    }
+    
+    private func isSA(_ ev: BattleEvent) -> Bool {
+        if case .unitAttacks(_, _, let t, _, _) = ev.kind, t == .superAttack { return true }
+        return false
+    }
+    
+    private func iconName(_ ev: BattleEvent) -> String {
+        switch ev.kind {
+        case .unitAttacks(_, _, let t, _, let dodged):
+            if dodged { return "xmark.circle.fill" }
+            switch t {
+            case .superAttack:      return "bolt.circle.fill"
+            case .additionalAttack: return "plus.circle.fill"
+            case .normal:           return "flame.fill"
+            }
+        case .enemyAttacks(_, _, _, let dodged):
+            return dodged ? "wind" : "exclamationmark.triangle.fill"
+        }
+    }
+    
+    private func iconColor(_ ev: BattleEvent) -> Color {
+        switch ev.kind {
+        case .unitAttacks(let u, _, let t, _, _):
+            return t == .superAttack ? Color.yellow : u.color
+        case .enemyAttacks(_, _, _, let dodged):
+            return dodged ? Color.green : Color.red
+        }
+    }
+    
+    private func cardBackground(_ ev: BattleEvent) -> Color {
+        switch ev.kind {
+        case .unitAttacks(_, _, let t, _, _):
+            return t == .superAttack
+                ? Color(red: 0.18, green: 0.14, blue: 0.05)
+                : Color(red: 0.10, green: 0.12, blue: 0.22)
+        case .enemyAttacks(_, _, _, let dodged):
+            return dodged
+                ? Color(red: 0.05, green: 0.18, blue: 0.10)
+                : Color(red: 0.22, green: 0.05, blue: 0.05)
+        }
+    }
+    
+    private func shadowColor(_ ev: BattleEvent) -> Color {
+        switch ev.kind {
+        case .unitAttacks(_, _, let t, _, _):
+            return t == .superAttack ? Color.yellow.opacity(0.5) : Color.blue.opacity(0.3)
+        case .enemyAttacks(_, _, _, let dodged):
+            return dodged ? Color.green.opacity(0.3) : Color.red.opacity(0.5)
+        }
+    }
+}
+
+// MARK: - Full-screen flash for Super Attacks
+struct SAFlashView: View {
+    let color: Color
+    @State private var opacity: Double = 0.5
+    
+    var body: some View {
+        color
+            .ignoresSafeArea()
+            .opacity(opacity)
+            .onAppear {
+                withAnimation(.easeOut(duration: 0.4)) {
+                    opacity = 0
                 }
             }
-            .padding(5)
-        }
-        .frame(width: 72, height: 110)
-        .scaleEffect(unit.isBeingDragged ? 1.08 : (isAnimatingEvent ? 1.04 : 1.0))
-        .animation(.spring(response: 0.25, dampingFraction: 0.6), value: unit.isBeingDragged)
-        .animation(.easeOut(duration: 0.15), value: isAnimatingEvent)
-        .animation(.easeInOut(duration: 0.15), value: isHit)
-    }
-    
-    private func statRow(label: String, value: String, color: Color) -> some View {
-        HStack(spacing: 2) {
-            Text(label)
-                .font(.system(size: 7, weight: .bold))
-                .foregroundColor(color.opacity(0.8))
-            Spacer()
-            Text(value)
-                .font(.system(size: 8, weight: .black, design: .monospaced))
-                .foregroundColor(Color.white)
-        }
-        .padding(.horizontal, 5)
-    }
-    
-    private func shortNum(_ n: Int) -> String {
-        if n >= 1_000_000 { return String(format: "%.1fM", Double(n) / 1_000_000) }
-        if n >= 1_000    { return String(format: "%.0fK", Double(n) / 1_000) }
-        return "\(n)"
     }
 }

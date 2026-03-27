@@ -47,7 +47,7 @@ struct TeamUnitView: View {
                 // ATK
                 statRow(label: "ATK", value: shortNum(unit.effectiveAtk), color: Color.yellow)
                 // DEF
-                statRow(label: "DEF", value: shortNum(unit.effectiveDef), color: Color.cyan)
+                statRow(label: "DEF", value: shortNum(unit.effectiveDef), color: Color.blue)
                 
                 // Archetype badge
                 Text(unit.archetype.rawValue)
