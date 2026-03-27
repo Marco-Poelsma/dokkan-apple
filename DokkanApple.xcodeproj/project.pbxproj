@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EF0339302F71A10D00EEB23F /* FrameByFrameMVVMApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF03392F2F71A10C00EEB23F /* FrameByFrameMVVMApp.swift */; };
 		EF0339372F71A12200EEB23F /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339332F71A12200EEB23F /* Sprite.swift */; };
 		EF0339382F71A12200EEB23F /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339342F71A12200EEB23F /* Team.swift */; };
 		EF0339392F71A12200EEB23F /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0339352F71A12200EEB23F /* Unit.swift */; };
@@ -26,10 +25,10 @@
 		EF453DA02F76E5EB00466E4F /* BattleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D9F2F76E5EB00466E4F /* BattleViewModel.swift */; };
 		EF453DA32F76E5FB00466E4F /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA22F76E5FB00466E4F /* BattleView.swift */; };
 		EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */; };
+		EF453DA92F76E6E400466E4F /* DokkanBattleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA82F76E6E400466E4F /* DokkanBattleApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		EF03392F2F71A10C00EEB23F /* FrameByFrameMVVMApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FrameByFrameMVVMApp.swift; path = "../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/FrameByFrameMVVMApp.swift"; sourceTree = "<group>"; };
 		EF0339332F71A12200EEB23F /* Sprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sprite.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/Model/Sprite.swift"; sourceTree = "<group>"; };
 		EF0339342F71A12200EEB23F /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Team.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/Model/Team.swift"; sourceTree = "<group>"; };
 		EF0339352F71A12200EEB23F /* Unit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Unit.swift; path = "../../../../Downloads/dokkan-apple-modified/FrameByFrameMVVM/Model/Unit.swift"; sourceTree = "<group>"; };
@@ -50,6 +49,7 @@
 		EF453D9F2F76E5EB00466E4F /* BattleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleViewModel.swift; sourceTree = "<group>"; };
 		EF453DA22F76E5FB00466E4F /* BattleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleView.swift; sourceTree = "<group>"; };
 		EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackSlotIndicatorView.swift; sourceTree = "<group>"; };
+		EF453DA82F76E6E400466E4F /* DokkanBattleApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DokkanBattleApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 		EF13126B2819749D00061056 /* FrameByFrameMVVM */ = {
 			isa = PBXGroup;
 			children = (
-				EF03392F2F71A10C00EEB23F /* FrameByFrameMVVMApp.swift */,
+				EF453DA82F76E6E400466E4F /* DokkanBattleApp.swift */,
 				EF13128A281974CE00061056 /* Model */,
 				EF1312922819760900061056 /* View */,
 				EF131290281974FD00061056 /* ViewModel */,
@@ -214,7 +214,6 @@
 				EF453DA02F76E5EB00466E4F /* BattleViewModel.swift in Sources */,
 				EF453D912F76E4A200466E4F /* TeamUnit.swift in Sources */,
 				EF0339392F71A12200EEB23F /* Unit.swift in Sources */,
-				EF0339302F71A10D00EEB23F /* FrameByFrameMVVMApp.swift in Sources */,
 				EF0339462F71A15E00EEB23F /* ContentView.swift in Sources */,
 				EF453D9A2F76E52F00466E4F /* HPBarView.swift in Sources */,
 				EF453D8E2F76E45900466E4F /* Enemy.swift in Sources */,
@@ -224,6 +223,7 @@
 				EF453D9D2F76E54A00466E4F /* EventFeedView.swift in Sources */,
 				EF453D972F76E4F400466E4F /* QueueUnitView.swift in Sources */,
 				EF453D942F76E4DB00466E4F /* TeamUnitView.swift in Sources */,
+				EF453DA92F76E6E400466E4F /* DokkanBattleApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
