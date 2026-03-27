@@ -25,6 +25,7 @@
 		EF453D9D2F76E54A00466E4F /* EventFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D9C2F76E54A00466E4F /* EventFeedView.swift */; };
 		EF453DA02F76E5EB00466E4F /* BattleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453D9F2F76E5EB00466E4F /* BattleViewModel.swift */; };
 		EF453DA32F76E5FB00466E4F /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA22F76E5FB00466E4F /* BattleView.swift */; };
+		EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		EF453D9C2F76E54A00466E4F /* EventFeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventFeedView.swift; sourceTree = "<group>"; };
 		EF453D9F2F76E5EB00466E4F /* BattleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleViewModel.swift; sourceTree = "<group>"; };
 		EF453DA22F76E5FB00466E4F /* BattleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleView.swift; sourceTree = "<group>"; };
+		EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackSlotIndicatorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 		EF1312922819760900061056 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				EF453DA52F76E61300466E4F /* AttackSlotIndicatorView.swift */,
 				EF453DA22F76E5FB00466E4F /* BattleView.swift */,
 				EF453D9C2F76E54A00466E4F /* EventFeedView.swift */,
 				EF453D992F76E52F00466E4F /* HPBarView.swift */,
@@ -206,6 +209,7 @@
 			files = (
 				EF03393A2F71A12200EEB23F /* Player.swift in Sources */,
 				EF0339382F71A12200EEB23F /* Team.swift in Sources */,
+				EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */,
 				EF453DA32F76E5FB00466E4F /* BattleView.swift in Sources */,
 				EF453DA02F76E5EB00466E4F /* BattleViewModel.swift in Sources */,
 				EF453D912F76E4A200466E4F /* TeamUnit.swift in Sources */,
