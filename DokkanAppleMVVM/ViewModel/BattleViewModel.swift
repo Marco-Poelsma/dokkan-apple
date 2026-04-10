@@ -47,7 +47,6 @@ class BattleViewModel: ObservableObject {
     
     // ── Drag ──────────────────────────────────────────────────────────────
     private let screenWidth = UIScreen.main.bounds.width
-    private let swapThreshold: CGFloat = 15
     
     // MARK: - Init
     init() {
@@ -293,7 +292,7 @@ class BattleViewModel: ObservableObject {
         generateEnemyAttacks()
     }
     
-    // MARK: - Drag logic (horizontal only, swap on threshold)
+    // MARK: - Drag logic
     func startDragging(unitId: UUID) {
         guard case .idle = phase else { return }
         draggedUnitId = unitId
@@ -305,35 +304,38 @@ class BattleViewModel: ObservableObject {
         guard let id = draggedUnitId, let unit = getUnit(by: id),
               case .idle = phase else { return }
         unit.updateDrag(offset: translation.width)
-        checkAndSwap(draggedUnit: unit, offset: translation.width)
         objectWillChange.send()
     }
     
     func endDragging() {
         guard let id = draggedUnitId, let unit = getUnit(by: id) else { return }
         
-        // Snap to nearest active slot con animación
-        let visualX = slotXFor(unit) + unit.dragOffset
-        if let best = closestActiveSlot(to: visualX, excluding: unit) {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7, blendDuration: 0.3)) {
-                swapUnits(unit, best)
+        // Calcular la posición final
+        let finalX = slotXFor(unit) + unit.dragOffset
+        let positions = [UnitPosition.left, .center, .right]
+        var bestSlotIndex = 1
+        var minDistance = CGFloat.greatestFiniteMagnitude
+        
+        for (i, pos) in positions.enumerated() {
+            let posX = pos.xPosition(in: screenWidth)
+            let distance = abs(finalX - posX)
+            if distance < minDistance {
+                minDistance = distance
+                bestSlotIndex = i
+            }
+        }
+        
+        // Si cambió de slot, reordenar con animación
+        let currentSlotIndex = activeSlotIndices.firstIndex(where: { roster[$0].id == unit.id }) ?? 1
+        if currentSlotIndex != bestSlotIndex {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                let targetUnit = activeUnits[bestSlotIndex]
+                swapUnits(unit, targetUnit)
             }
         }
         
         unit.endDrag()
         draggedUnitId = nil
-        objectWillChange.send()
-    }
-    
-    private func checkAndSwap(draggedUnit: TeamUnit, offset: CGFloat) {
-        let visualX = slotXFor(draggedUnit) + offset
-        guard abs(offset) > swapThreshold,
-              let target = closestActiveSlot(to: visualX, excluding: draggedUnit) else { return }
-        
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-            swapUnits(draggedUnit, target)
-        }
-        draggedUnit.dragOffset = 0
         objectWillChange.send()
     }
     
@@ -355,27 +357,18 @@ class BattleViewModel: ObservableObject {
         return positions[min(slotIdx, 2)].xPosition(in: screenWidth)
     }
     
-    private func closestActiveSlot(to x: CGFloat, excluding excluded: TeamUnit?) -> TeamUnit? {
-        let positions = [UnitPosition.left, .center, .right]
-        var best: (unit: TeamUnit, dist: CGFloat)? = nil
-        
-        for (i, rosterIdx) in activeSlotIndices.enumerated() {
-            let unit = roster[rosterIdx]
-            if unit.id == excluded?.id { continue }
-            let px = positions[i].xPosition(in: screenWidth)
-            let d = abs(px - x)
-            if best == nil || d < best!.dist { best = (unit, d) }
-        }
-        return best?.unit
-    }
-    
     func getVisualX(for unit: TeamUnit) -> CGFloat {
         let positions = [UnitPosition.left, .center, .right]
         guard let slotIdx = activeSlotIndices.firstIndex(where: { roster[$0].id == unit.id }) else {
             return screenWidth / 2
         }
         let base = positions[min(slotIdx, 2)].xPosition(in: screenWidth)
-        return unit.isBeingDragged ? base + unit.dragOffset : base
+        
+        // Solo la unidad arrastrada tiene offset
+        if unit.isBeingDragged {
+            return base + unit.dragOffset
+        }
+        return base
     }
     
     private func getUnit(by id: UUID) -> TeamUnit? {
