@@ -95,6 +95,29 @@ struct BattleView: View {
             if case .gameOver(let won) = vm.phase {
                 gameOverOverlay(won: won)
             }
+            
+            // En el ZStack principal de BattleView, añade esto después del gameOverOverlay:
+
+            // ── Wave Transition Overlay ─────────────────────────────────────────
+            if vm.showWaveTransition {
+                VStack {
+                    Spacer()
+                    Text(vm.waveTransitionText)
+                        .font(.system(size: 48, weight: .black, design: .rounded))
+                        .foregroundColor(.yellow)
+                        .shadow(color: .orange, radius: 10)
+                        .transition(.asymmetric(insertion: .scale, removal: .opacity));                    Text("NEW CHALLENGER APPROACHES!")
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .foregroundColor(Color.white.opacity(0.8))
+                        .padding(.top, 8)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.black.opacity(0.7))
+                .ignoresSafeArea()
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.5), value: vm.showWaveTransition)
+            }
         }
         .ignoresSafeArea()
     }
@@ -116,7 +139,7 @@ struct BattleView: View {
     // MARK: - Enemy section
     var enemySection: some View {
         VStack(spacing: 8) {
-            // Turn counter
+            // Turn counter y Wave info
             HStack {
                 Text("TURN \(vm.turnNumber)")
                     .font(.system(size: 11, weight: .black, design: .rounded))
@@ -125,7 +148,18 @@ struct BattleView: View {
                     .padding(.vertical, 3)
                     .background(Color.white.opacity(0.08))
                     .cornerRadius(6)
+                
                 Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("WAVE \(vm.currentWave)")
+                        .font(.system(size: 13, weight: .bold, design: .rounded))
+                        .foregroundColor(vm.enemy.color)
+                    
+                    Text("🏆 BEST: \(vm.highestWave)")
+                        .font(.system(size: 9, weight: .semibold, design: .rounded))
+                        .foregroundColor(Color.yellow.opacity(0.8))
+                }
             }
             
             // Enemy HP bars
@@ -152,15 +186,19 @@ struct BattleView: View {
                     )
                     .frame(width: 90, height: 90)
                     .overlay(
-                        Text(vm.enemy.name.prefix(1))
-                            .font(.system(size: 44, weight: .black, design: .rounded))
-                            .foregroundColor(Color.white.opacity(0.9))
+                        VStack(spacing: 4) {
+                            Text(vm.enemy.name.prefix(1))
+                                .font(.system(size: 36, weight: .black, design: .rounded))
+                                .foregroundColor(Color.white.opacity(0.9))
+                            Text("W\(vm.currentWave)")
+                                .font(.system(size: 10, weight: .bold, design: .rounded))
+                                .foregroundColor(Color.white.opacity(0.7))
+                        }
                     )
                     .shadow(color: vm.enemy.color.opacity(0.6), radius: vm.showEnemyHit ? 20 : 8)
                     .scaleEffect(vm.enemyShake ? 0.93 : 1.0)
                     .animation(.spring(response: 0.15, dampingFraction: 0.4), value: vm.enemyShake)
                 
-                // Hit flash
                 if vm.showEnemyHit {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.white.opacity(0.7))

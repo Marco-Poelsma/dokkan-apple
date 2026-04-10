@@ -22,13 +22,19 @@ class BattleViewModel: ObservableObject {
     @Published var teamHP: Int = 200_000
     let teamMaxHP: Int = 200_000
     
+    // ── Fase del enemigo (wave) ───────────────────────────────────────────
+    @Published var currentWave: Int = 1
+    @Published var highestWave: Int {
+        didSet {
+            UserDefaults.standard.set(highestWave, forKey: "highestWave")
+        }
+    }
+    
     // ── Turno ─────────────────────────────────────────────────────────────
     @Published var turnNumber: Int = 1
-    /// Índice en `roster` de la primera unidad activa (0, 3, 6, 3, 0 ...)
     @Published var activeStartIndex: Int = 0
     
     // ── Ataques enemigos por turno: slot 0-3 ─────────────────────────────
-    /// Cuántos ataques llegan antes de la unidad en slot0 del turno actual
     @Published var enemyAttackSlots: [EnemyAttackSlot] = []
     
     // ── Resolución de turno ───────────────────────────────────────────────
@@ -44,17 +50,21 @@ class BattleViewModel: ObservableObject {
     @Published var lastEventText: String = ""
     @Published var teamShake: Bool = false
     @Published var enemyShake: Bool = false
+    @Published var showWaveTransition: Bool = false
+    @Published var waveTransitionText: String = ""
     
     // ── Drag ──────────────────────────────────────────────────────────────
     private let screenWidth = UIScreen.main.bounds.width
     
     // MARK: - Init
     init() {
+        let savedWave = UserDefaults.standard.integer(forKey: "highestWave")
+        highestWave = savedWave > 0 ? savedWave : 1
         roster = UnitFactory.makeTeam().shuffled()
         generateEnemyAttacks()
     }
     
-    // MARK: - Active units (3 visible dragueable)
+    // MARK: - Active units
     var activeUnits: [TeamUnit] {
         let indices = activeSlotIndices
         return indices.map { roster[$0] }
@@ -64,7 +74,6 @@ class BattleViewModel: ObservableObject {
         (0..<3).map { (activeStartIndex + $0) % roster.count }
     }
     
-    // Unidades que no están activas (visibles en cola, poco saturadas)
     var queueUnits: [(unit: TeamUnit, index: Int)] {
         let active = Set(activeSlotIndices)
         return roster.enumerated()
@@ -72,27 +81,24 @@ class BattleViewModel: ObservableObject {
             .map { (unit: $0.element, index: $0.offset) }
     }
     
-    // MARK: - Generate enemy attacks for this turn
+    // MARK: - Generate enemy attacks
     private func generateEnemyAttacks() {
         enemyAttackSlots = []
-        // Between 1 and 3 attacks, spread randomly across slots 0-3
         let attackCount = Int.random(in: 1...3)
         var slots = (0...3).map { $0 }
         slots.shuffle()
         enemyAttackSlots = Array(slots.prefix(attackCount)).sorted()
     }
     
-    // MARK: - Advance turn rotation
+    // MARK: - Advance turn
     private func advanceTurn() {
-        // Pattern: 0 → 3 → 6(→0) → 3 → 0 → ...
-        // Since team = 7: slots are [0,1,2], [3,4,5], [6,0,1], [3,4,5] ...
         activeStartIndex = (activeStartIndex + 3) % roster.count
         turnNumber += 1
         for unit in roster { unit.newTurn() }
         generateEnemyAttacks()
     }
     
-    // MARK: - Start Turn (resolve battle events)
+    // MARK: - Start Turn
     func startTurn() {
         guard case .idle = phase else { return }
         phase = .resolving
@@ -104,20 +110,16 @@ class BattleViewModel: ObservableObject {
         playNextEvent()
     }
     
-    // MARK: - Build all events for this turn
+    // MARK: - Build events
     private func buildTurnEvents() -> [BattleEvent] {
         var events: [BattleEvent] = []
         let units = activeUnits
-        
-        // Pick which of our attacks is the SA (super attack) – one per turn
         let saSlot = Int.random(in: 0..<3)
         
-        // Determine crits per unit
         func isCrit(_ unit: TeamUnit) -> Bool { Double.random(in: 0...1) < unit.critChance }
         func isAA(_ unit: TeamUnit) -> Bool { Double.random(in: 0...1) < unit.aaChance }
         func isDodge(_ unit: TeamUnit) -> Bool { Double.random(in: 0...1) < unit.dodgeChance }
         
-        // -- Before slot-0 attack: enemy attacks at slot 0
         appendEnemyEvents(at: 0, targets: units, isDodge: isDodge, into: &events)
         
         for (slotIndex, unit) in units.enumerated() {
@@ -126,20 +128,15 @@ class BattleViewModel: ObservableObject {
             let dmg = calcUnitDamage(unit, type: attackType, isCrit: crit)
             events.append(BattleEvent(kind: .unitAttacks(unit: unit, damage: dmg, type: attackType, isCrit: crit, dodged: false)))
             
-            // SA effect
             if attackType == .superAttack { unit.applySAEffect() }
             
-            // AA check
             if isAA(unit) {
                 let aaCrit = isCrit(unit)
                 let aaDmg = calcUnitDamage(unit, type: .additionalAttack, isCrit: aaCrit)
                 events.append(BattleEvent(kind: .unitAttacks(unit: unit, damage: aaDmg, type: .additionalAttack, isCrit: aaCrit, dodged: false)))
             }
             
-            // Build by hit: register any hit from this unit
             unit.registerHit()
-            
-            // Enemy attacks after this slot (slot index+1)
             appendEnemyEvents(at: slotIndex + 1, targets: units, isDodge: isDodge, into: &events)
         }
         
@@ -150,7 +147,6 @@ class BattleViewModel: ObservableObject {
         let attacksHere = enemyAttackSlots.filter { $0 == slot }
         guard !attacksHere.isEmpty else { return }
         
-        // Target: first unit in current active rotation (slot 0 = takes most hits)
         let targetIndex = min(slot, targets.count - 1)
         let target = targets[targetIndex]
         
@@ -169,20 +165,15 @@ class BattleViewModel: ObservableObject {
         case .normal:         base = Int(Double(base) * 1.5)
         }
         if isCrit { base = Int(Double(base) * 1.5) }
-        // Subtract part of enemy defense
         base = max(1000, base - enemy.atk / 8)
         return base
     }
     
-    // MARK: - Animate events one by one
+    // MARK: - Animate events
     private func playNextEvent() {
-        // Verificar si el juego ya terminó antes de procesar más eventos
-        if case .gameOver = phase {
-            return
-        }
+        if case .gameOver = phase { return }
         
         guard currentEventIndex < currentEvents.count else {
-            // All events done – apply totals and end turn
             finalizeTurn()
             return
         }
@@ -193,14 +184,11 @@ class BattleViewModel: ObservableObject {
         
         applyEvent(event)
         
-        // Verificar si el juego terminó después de aplicar el evento
         if case .gameOver = phase {
-            // Si el juego terminó, no procesar más eventos
             animatingEvent = nil
             return
         }
         
-        // Duration depends on event type
         let delay: Double = {
             switch event.kind {
             case .unitAttacks(_, _, let t, _, _):
@@ -212,7 +200,6 @@ class BattleViewModel: ObservableObject {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
             guard let self = self else { return }
-            // Verificar nuevamente si el juego terminó antes de continuar
             if case .gameOver = self.phase {
                 self.animatingEvent = nil
                 return
@@ -236,8 +223,6 @@ class BattleViewModel: ObservableObject {
                 triggerTeamHit(unitId: target.id)
             }
         }
-        
-        // Verificar game over después de cada evento
         checkGameOver()
     }
     
@@ -263,15 +248,83 @@ class BattleViewModel: ObservableObject {
     
     private func checkGameOver() {
         if enemy.isDead {
-            phase = .gameOver(won: true)
+            spawnNextEnemy()
         } else if teamHP <= 0 {
             phase = .gameOver(won: false)
         }
     }
     
+    // MARK: - Spawn next enemy
+    private func spawnNextEnemy() {
+        currentWave += 1
+        
+        if currentWave > highestWave {
+            highestWave = currentWave
+        }
+        
+        waveTransitionText = "WAVE \(currentWave)"
+        showWaveTransition = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            self.showWaveTransition = false
+        }
+        
+        let multiplier = pow(1.5, Double(currentWave - 1))
+        let baseEnemy = Enemy.defaultEnemy()
+        
+        // Crear nuevo enemigo con estadísticas aumentadas
+        let newEnemy = Enemy(
+            name: "Wave \(currentWave) Boss",
+            atk: Int(Double(baseEnemy.atk) * multiplier),
+            color: getWaveColor(wave: currentWave)
+        )
+        
+        // Ajustar HP manualmente porque el init no tiene maxHp
+        newEnemy.remainingHP = Int(Double(baseEnemy.totalHP) * multiplier)
+        
+        teamHP = teamMaxHP
+        turnNumber = 1
+        activeStartIndex = 0
+        
+        // Resetear unidades (resetear buffs)
+        for unit in roster {
+            unit.permAtkBoost = 0
+            unit.tempAtkBoost = 0
+            unit.permDefBoost = 0
+            unit.tempDefBoost = 0
+            unit.hitCount = 0
+        }
+        
+        enemy = newEnemy
+        generateEnemyAttacks()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
+            if case .resolving = self.phase {
+                self.finalizeTurn()
+            }
+        }
+    }
+    
+    private func getWaveColor(wave: Int) -> Color {
+        let colors: [Color] = [
+            Color(red: 0.6, green: 0.0, blue: 0.6),  // Fase 1 - Púrpura
+            Color.red,                                 // Fase 2 - Rojo
+            Color.orange,                              // Fase 3 - Naranja
+            Color.yellow,                              // Fase 4 - Amarillo
+            Color.green,                               // Fase 5 - Verde
+            Color.blue,                                // Fase 6 - Azul
+            Color(red: 0.29, green: 0.0, blue: 0.51),  // Fase 7 - Índigo
+            Color.pink,                                // Fase 8 - Rosa
+            Color.black,                               // Fase 9 - Marrón
+            Color(red: 0.1, green: 0.1, blue: 0.1)     // Fase 10+ - Negro
+        ]
+        let index = min(wave - 1, colors.count - 1)
+        return colors[index]
+    }
+    
     private func finalizeTurn() {
-        // Solo avanzar turno si el juego no ha terminado
-        if case .resolving = phase, !enemy.isDead && teamHP > 0 {
+        if case .resolving = phase, teamHP > 0 {
             phase = .idle
             advanceTurn()
         }
@@ -282,6 +335,7 @@ class BattleViewModel: ObservableObject {
         roster = UnitFactory.makeTeam().shuffled()
         enemy = Enemy.defaultEnemy()
         teamHP = teamMaxHP
+        currentWave = 1
         turnNumber = 1
         activeStartIndex = 0
         phase = .idle
@@ -289,6 +343,7 @@ class BattleViewModel: ObservableObject {
         currentEventIndex = 0
         animatingEvent = nil
         lastEventText = ""
+        showWaveTransition = false
         generateEnemyAttacks()
     }
     
@@ -310,7 +365,6 @@ class BattleViewModel: ObservableObject {
     func endDragging() {
         guard let id = draggedUnitId, let unit = getUnit(by: id) else { return }
         
-        // Calcular la posición final
         let finalX = slotXFor(unit) + unit.dragOffset
         let positions = [UnitPosition.left, .center, .right]
         var bestSlotIndex = 1
@@ -325,7 +379,6 @@ class BattleViewModel: ObservableObject {
             }
         }
         
-        // Si cambió de slot, reordenar con animación
         let currentSlotIndex = activeSlotIndices.firstIndex(where: { roster[$0].id == unit.id }) ?? 1
         if currentSlotIndex != bestSlotIndex {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
@@ -364,7 +417,6 @@ class BattleViewModel: ObservableObject {
         }
         let base = positions[min(slotIdx, 2)].xPosition(in: screenWidth)
         
-        // Solo la unidad arrastrada tiene offset
         if unit.isBeingDragged {
             return base + unit.dragOffset
         }
@@ -375,7 +427,6 @@ class BattleViewModel: ObservableObject {
         roster.first { $0.id == id }
     }
     
-    // MARK: - Enemy attack display helpers
     func enemyAttackCount(atSlot slot: Int) -> Int {
         enemyAttackSlots.filter { $0 == slot }.count
     }
