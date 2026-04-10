@@ -312,11 +312,14 @@ class BattleViewModel: ObservableObject {
     func endDragging() {
         guard let id = draggedUnitId, let unit = getUnit(by: id) else { return }
         
-        // Snap to nearest active slot
+        // Snap to nearest active slot con animación
         let visualX = slotXFor(unit) + unit.dragOffset
         if let best = closestActiveSlot(to: visualX, excluding: unit) {
-            swapUnits(unit, best)
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.7, blendDuration: 0.3)) {
+                swapUnits(unit, best)
+            }
         }
+        
         unit.endDrag()
         draggedUnitId = nil
         objectWillChange.send()
@@ -326,7 +329,10 @@ class BattleViewModel: ObservableObject {
         let visualX = slotXFor(draggedUnit) + offset
         guard abs(offset) > swapThreshold,
               let target = closestActiveSlot(to: visualX, excluding: draggedUnit) else { return }
-        swapUnits(draggedUnit, target)
+        
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+            swapUnits(draggedUnit, target)
+        }
         draggedUnit.dragOffset = 0
         objectWillChange.send()
     }
@@ -337,6 +343,7 @@ class BattleViewModel: ObservableObject {
         let ri = activeSlotIndices[ai]
         let rj = activeSlotIndices[bi]
         roster.swapAt(ri, rj)
+        
         #if os(iOS)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
         #endif

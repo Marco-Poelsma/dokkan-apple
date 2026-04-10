@@ -178,6 +178,7 @@ struct BattleView: View {
             ForEach(Array(vm.activeUnits.enumerated()), id: \.element.id) { (slotIdx, unit) in
                 let isAnimating = animatingSlotIndex == slotIdx
                 let isHit = vm.hitUnitId == unit.id
+                let isDragged = vm.draggedUnitId == unit.id
                 
                 TeamUnitView(
                     unit: unit,
@@ -197,8 +198,12 @@ struct BattleView: View {
                         }
                         .onEnded { _ in vm.endDragging() }
                 )
-                .animation(unit.isBeingDragged ? nil : .spring(response: 0.45, dampingFraction: 0.75), value: vm.getVisualX(for: unit))
-                .zIndex(unit.isBeingDragged ? 10 : Double(slotIdx))
+                // Animación suave para todas las unidades cuando cambia su posición
+                .animation(
+                    .spring(response: 0.4, dampingFraction: 0.7, blendDuration: 0.3),
+                    value: vm.getVisualX(for: unit)
+                )
+                .zIndex(isDragged ? 10 : Double(slotIdx))
             }
         }
     }
