@@ -248,12 +248,16 @@ struct BattleView: View {
             HStack(spacing: 6) {
                 // Show queue in roster order
                 let queue = vm.queueUnits
-                ForEach(queue, id: \.unit.id) { item in
+                ForEach(Array(queue.enumerated()), id: \.element.unit.id) { offset, item in
                     VStack(spacing: 2) {
                         Text("#\(item.index + 1)")
                             .font(.system(size: 7, weight: .bold, design: .monospaced))
                             .foregroundColor(Color.white.opacity(0.3))
-                        QueueUnitView(unit: item.unit, queuePosition: item.index)
+                        QueueUnitView(
+                            unit: item.unit,
+                            queuePosition: item.index,
+                            isNextInRotation: offset < 3  // ← Las primeras 3 en la UI son las siguientes
+                        )
                     }
                 }
             }
@@ -277,34 +281,68 @@ struct BattleView: View {
         .cornerRadius(12)
     }
     
-    // MARK: - Start Turn button
+    // BattleView.swift - Añade este botón junto al Start Turn button
+
+    // MARK: - Start Turn button (modificado para incluir el botón skip)
     var startTurnButton: some View {
         VStack {
             Spacer()
             Spacer()
             
-            Button(action: { vm.startTurn() }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "play.fill")
-                        .font(.system(size: 14, weight: .black))
-                    Text("START TURN")
-                        .font(.system(size: 15, weight: .black, design: .rounded))
-                        .kerning(1.2)
-                }
-                .foregroundColor(Color.black)
-                .padding(.horizontal, 28)
-                .padding(.vertical, 14)
-                .background(
-                    Capsule()
-                        .fill(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color.yellow, Color(red: 1.0, green: 0.7, blue: 0.1)]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
+            HStack(spacing: 20) {
+                // Botón SKIP WAVE (solo visible en modo idle)
+                if case .idle = vm.phase {
+                    Button(action: { vm.skipCurrentWave() }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "forward.fill")
+                                .font(.system(size: 12, weight: .black))
+                            Text("SKIP")
+                                .font(.system(size: 13, weight: .black, design: .rounded))
+                                .kerning(1.0)
+                        }
+                        .foregroundColor(Color.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 14)
+                        .background(
+                            Capsule()
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [Color.purple, Color(red: 0.6, green: 0.2, blue: 0.8)]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
                         )
-                )
-                .shadow(color: Color.yellow.opacity(0.5), radius: 12, x: 0, y: 4)
+                        .shadow(color: Color.purple.opacity(0.4), radius: 8, x: 0, y: 4)
+                    }
+                }
+                
+                // Botón START TURN original
+                if case .idle = vm.phase {
+                    Button(action: { vm.startTurn() }) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "play.fill")
+                                .font(.system(size: 14, weight: .black))
+                            Text("START TURN")
+                                .font(.system(size: 15, weight: .black, design: .rounded))
+                                .kerning(1.2)
+                        }
+                        .foregroundColor(Color.black)
+                        .padding(.horizontal, 28)
+                        .padding(.vertical, 14)
+                        .background(
+                            Capsule()
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [Color.yellow, Color(red: 1.0, green: 0.7, blue: 0.1)]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                        )
+                        .shadow(color: Color.yellow.opacity(0.5), radius: 12, x: 0, y: 4)
+                    }
+                }
             }
             .padding(.bottom, unitBottomOffset + 100)
         }

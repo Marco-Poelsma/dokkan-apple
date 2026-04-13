@@ -430,4 +430,16 @@ class BattleViewModel: ObservableObject {
     func enemyAttackCount(atSlot slot: Int) -> Int {
         enemyAttackSlots.filter { $0 == slot }.count
     }
+    
+    // MARK: - Skip Wave (Developer/Testing)
+    func skipCurrentWave() {
+        // Solo permitir skip cuando no se está resolviendo un turno
+        guard case .idle = phase else { return }
+        
+        // Matar al enemigo instantáneamente
+        enemy.remainingHP = 0
+        
+        // Forzar el spawn del siguiente enemigo
+        spawnNextEnemy()
+    }
 }

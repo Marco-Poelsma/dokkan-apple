@@ -1,34 +1,33 @@
 // QueueUnitView.swift
-// Vista pequeña y desaturada de las unidades en cola (no activas)
-
 import SwiftUI
 
 struct QueueUnitView: View {
     let unit: TeamUnit
     let queuePosition: Int   // visual order in the queue row
+    let isNextInRotation: Bool  // ← NUEVO: indica si está entre las 3 siguientes
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-                .fill(unit.color.opacity(0.35))
+                .fill(unit.color.opacity(isNextInRotation ? 0.85 : 0.15))  // Menos translúcida
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(Color.white.opacity(0.15), lineWidth: 1)
+                        .strokeBorder(Color.white.opacity(isNextInRotation ? 0.3 : 0.15), lineWidth: 1)
                 )
             
             VStack(spacing: 2) {
                 Text(unit.symbol)
                     .font(.system(size: 13, weight: .black, design: .rounded))
-                    .foregroundColor(Color.white.opacity(0.65))
+                    .foregroundColor(Color.white.opacity(isNextInRotation ? 0.9 : 0.65))
                 
                 Text(unit.name)
                     .font(.system(size: 7, weight: .semibold, design: .rounded))
-                    .foregroundColor(Color.white.opacity(0.5))
+                    .foregroundColor(Color.white.opacity(isNextInRotation ? 0.8 : 0.5))
                     .lineLimit(1)
                 
                 Text(unit.archetype.rawValue)
                     .font(.system(size: 6, weight: .bold))
-                    .foregroundColor(Color.white.opacity(0.4))
+                    .foregroundColor(Color.white.opacity(isNextInRotation ? 0.7 : 0.4))
                     .lineLimit(1)
             }
             .padding(4)
