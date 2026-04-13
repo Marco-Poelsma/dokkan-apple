@@ -80,17 +80,7 @@ struct BattleView: View {
                 startTurnButton
             }
             
-            // ── Last event label (small, below units) ─────────────────────
-            if !vm.lastEventText.isEmpty, case .resolving = vm.phase {
-                VStack { Spacer()
-                    Text(vm.lastEventText)
-                        .font(.system(size: 10, weight: .semibold, design: .rounded))
-                        .foregroundColor(Color.white.opacity(0.6))
-                        .padding(.bottom, unitBottomOffset - 20)
-                }
-                .allowsHitTesting(false)
-            }
-            
+                        
             // ── Game Over overlay ─────────────────────────────────────────
             if case .gameOver(let won) = vm.phase {
                 gameOverOverlay(won: won)
