@@ -4,6 +4,7 @@ import SwiftUI
 struct HomeView: View {
     @State private var showGame = false
     @State private var highestWave: Int = 1
+    @State private var appIconImage: UIImage? = nil
     
     var body: some View {
         ZStack {
@@ -19,42 +20,53 @@ struct HomeView: View {
             )
             .ignoresSafeArea()
             
-            VStack(spacing: 20) {  // ← Reducido de 40 a 20
+            VStack(spacing: 20) {
                 
-                // Logo (más pequeño)
-                VStack(spacing: 5) {  // ← Reducido de 10 a 5
-                    Text("⚔️")
-                        .font(.system(size: 50))  // ← Reducido de 70 a 50
+                // Logo con imagen desde img/AppIcon.jpg
+                VStack(spacing: 5) {
+                    if let image = appIconImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .interpolation(.high)
+                            .frame(width: 80, height: 80)
+                            .cornerRadius(18)
+                            .shadow(color: Color.yellow.opacity(0.3), radius: 10)
+                    } else {
+                        // Fallback mientras carga
+                        Image(systemName: "apple.logo")
+                            .font(.system(size: 60))
+                            .foregroundColor(Color.yellow)
+                    }
                     
                     Text("DOKKAN APPLE")
-                        .font(.system(size: 28, weight: .black, design: .rounded))  // ← Reducido
+                        .font(.system(size: 28, weight: .black, design: .rounded))
                         .foregroundColor(Color.yellow)
                     
                     Text("BATTLE ARENA")
-                        .font(.system(size: 12, weight: .bold, design: .rounded))  // ← Reducido
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(Color.white.opacity(0.6))
                         .kerning(2)
                 }
-                .padding(.top, 30)  // ← Añadido padding top pequeño
+                .padding(.top, 30)
                 
-                // Max Score Card (más compacta)
-                VStack(spacing: 8) {  // ← Reducido de 12 a 8
+                // Max Score Card
+                VStack(spacing: 8) {
                     Text("🏆 HIGHEST WAVE 🏆")
-                        .font(.system(size: 12, weight: .bold, design: .rounded))  // ← Reducido
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
                         .foregroundColor(Color.yellow.opacity(0.8))
                     
                     Text("\(highestWave)")
-                        .font(.system(size: 48, weight: .black, design: .rounded))  // ← Reducido de 60 a 48
+                        .font(.system(size: 48, weight: .black, design: .rounded))
                         .foregroundColor(Color.white)
                     
                     Text("waves cleared")
-                        .font(.system(size: 10, weight: .medium, design: .rounded))  // ← Reducido
+                        .font(.system(size: 10, weight: .medium, design: .rounded))
                         .foregroundColor(Color.white.opacity(0.5))
                 }
-                .padding(20)  // ← Reducido de 30 a 20
-                .frame(width: 250)  // ← Reducido de 280 a 250
+                .padding(20)
+                .frame(width: 250)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)  // ← Reducido de 20 a 16
+                    RoundedRectangle(cornerRadius: 16)
                         .fill(Color.white.opacity(0.08))
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
@@ -62,26 +74,26 @@ struct HomeView: View {
                         )
                 )
                 
-                // Play Button (más compacto)
+                // Play Button
                 Button(action: {
                     showGame = true
                 }) {
-                    HStack(spacing: 10) {  // ← Reducido de 12 a 10
+                    HStack(spacing: 10) {
                         Image(systemName: "play.fill")
-                            .font(.system(size: 16, weight: .black))  // ← Reducido de 20 a 16
+                            .font(.system(size: 16, weight: .black))
                         Text("START BATTLE")
-                            .font(.system(size: 16, weight: .black, design: .rounded))  // ← Reducido
+                            .font(.system(size: 16, weight: .black, design: .rounded))
                     }
                     .foregroundColor(Color.black)
-                    .padding(.horizontal, 40)  // ← Reducido de 50 a 40
-                    .padding(.vertical, 14)  // ← Reducido de 18 a 14
+                    .padding(.horizontal, 40)
+                    .padding(.vertical, 14)
                     .background(
                         Capsule()
                             .fill(Color.yellow)
-                            .shadow(color: Color.yellow.opacity(0.5), radius: 8)  // ← Reducido de 10 a 8
+                            .shadow(color: Color.yellow.opacity(0.5), radius: 8)
                     )
                 }
-                .padding(.top, 5)  // ← Añadido padding top pequeño
+                .padding(.top, 5)
                 
                 // Reset button
                 Button(action: {
@@ -89,16 +101,16 @@ struct HomeView: View {
                     highestWave = 1
                 }) {
                     Text("Reset Score")
-                        .font(.system(size: 10, weight: .medium, design: .rounded))  // ← Reducido de 12 a 10
+                        .font(.system(size: 10, weight: .medium, design: .rounded))
                         .foregroundColor(Color.white.opacity(0.4))
                         .underline()
                 }
                 .padding(.top, 5)
                 
-                Spacer(minLength: 20)  // ← Spacer más pequeño al final
+                Spacer(minLength: 20)
             }
-            .padding(.horizontal)  // Solo padding horizontal
-            .padding(.vertical, 10)  // Padding vertical reducido
+            .padding(.horizontal)
+            .padding(.vertical, 10)
         }
         .fullScreenCover(isPresented: $showGame) {
             BattleWrapperView()
@@ -106,10 +118,25 @@ struct HomeView: View {
         .onAppear {
             let saved = UserDefaults.standard.integer(forKey: "highestWave")
             highestWave = saved > 0 ? saved : 1
+            loadAppIcon()
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("UpdateHighestWave"))) { _ in
             let saved = UserDefaults.standard.integer(forKey: "highestWave")
             highestWave = saved > 0 ? saved : 1
         }
+    }
+    
+    private func loadAppIcon() {
+        // Método 2: Buscar en el bundle completo
+        if let path = Bundle.main.path(forResource: "AppIcon", ofType: "jpg") {
+            if let image = UIImage(contentsOfFile: path) {
+                appIconImage = image
+                return
+            }
+        }
+        
+        // Si no encuentra ninguna, usar fallback
+        print("No se encontró AppIcon.jpg en ninguna ubicación")
+        appIconImage = UIImage(systemName: "apple.logo")?.withTintColor(.yellow, renderingMode: .alwaysOriginal)
     }
 }
