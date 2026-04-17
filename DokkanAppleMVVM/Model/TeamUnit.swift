@@ -127,9 +127,9 @@ struct UnitFactory {
             // 1 - Stacker AA% (stacks ATK ∞ every attack, high AA)
             TeamUnit(
                 archetype: .stackerAA,
-                name: "Vegeta",
+                name: "Goku",
                 color: Color(red: 0.55, green: 0.20, blue: 0.90),   // purple
-                symbol: "V",
+                symbol: "GK",
                 baseAtk: 18_000,
                 baseDef: 9_000,
                 dodgeChance: 0.10,
@@ -141,9 +141,9 @@ struct UnitFactory {
             // 2 - Dodger (high dodge, low def)
             TeamUnit(
                 archetype: .dodger,
-                name: "Hit",
+                name: "Goten",
                 color: Color(red: 0.10, green: 0.72, blue: 0.72),   // teal
-                symbol: "H",
+                symbol: "GTN",
                 baseAtk: 15_000,
                 baseDef: 5_000,
                 dodgeChance: 0.55,
@@ -155,9 +155,9 @@ struct UnitFactory {
             // 3 - AA low critter (moderate aa, decent crit, low stats)
             TeamUnit(
                 archetype: .aaLowCrit,
-                name: "Gohan",
+                name: "Trunks",
                 color: Color(red: 0.95, green: 0.55, blue: 0.10),   // orange
-                symbol: "G",
+                symbol: "TKS",
                 baseAtk: 13_000,
                 baseDef: 10_000,
                 dodgeChance: 0.08,
@@ -171,7 +171,7 @@ struct UnitFactory {
                 archetype: .support,
                 name: "Piccolo",
                 color: Color(red: 0.20, green: 0.68, blue: 0.28),   // green
-                symbol: "P",
+                symbol: "PCL",
                 baseAtk: 10_000,
                 baseDef: 20_000,
                 dodgeChance: 0.05,
@@ -183,9 +183,9 @@ struct UnitFactory {
             // 5 - Slot-3 Tank (very high def, low atk)
             TeamUnit(
                 archetype: .slot3Tank,
-                name: "Recoome",
+                name: "Gohan",
                 color: Color(red: 0.85, green: 0.15, blue: 0.25),   // red
-                symbol: "R",
+                symbol: "GHN",
                 baseAtk: 8_000,
                 baseDef: 35_000,
                 dodgeChance: 0.05,
@@ -197,9 +197,9 @@ struct UnitFactory {
             // 6 - DPS no def (massive atk, no defense)
             TeamUnit(
                 archetype: .dpsNoDef,
-                name: "Broly",
+                name: "Vegeta",
                 color: Color(red: 0.95, green: 0.85, blue: 0.10),   // yellow
-                symbol: "B",
+                symbol: "VGT",
                 baseAtk: 28_000,
                 baseDef: 2_000,
                 dodgeChance: 0.05,
@@ -211,9 +211,9 @@ struct UnitFactory {
             // 7 - Build by hit (grows stronger each hit received)
             TeamUnit(
                 archetype: .buildByHit,
-                name: "Goku",
+                name: "Tien",
                 color: Color(red: 0.20, green: 0.45, blue: 0.95),   // blue
-                symbol: "GK",
+                symbol: "TN",
                 baseAtk: 16_000,
                 baseDef: 14_000,
                 dodgeChance: 0.15,

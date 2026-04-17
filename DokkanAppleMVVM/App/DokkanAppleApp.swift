@@ -9,7 +9,7 @@ struct Dokkan: App {
     
     var body: some Scene {
         WindowGroup {
-            BattleView()
+            HomeView()
                 .environmentObject(battleVM)
         }
     }

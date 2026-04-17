@@ -1,18 +1,18 @@
 // BattleView.swift
-// Vista principal de batalla - reemplaza ContentView
+// Vista principal de batalla
 
 import SwiftUI
 
 struct BattleView: View {
     @EnvironmentObject var vm: BattleViewModel
-    
+    @Environment(\.presentationMode) var presentationMode
+
     let screenWidth  = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
-    let unitBottomOffset: CGFloat = 160   // Y center de las unidades activas
+    let unitBottomOffset: CGFloat = 160
     
     var unitBottomY: CGFloat { screenHeight - unitBottomOffset }
     
-    // Which active slot index (0-2) is being animated
     var animatingSlotIndex: Int? {
         guard let ev = vm.animatingEvent else { return nil }
         if case .unitAttacks(let u, _, _, _, _) = ev.kind {
@@ -40,14 +40,44 @@ struct BattleView: View {
             
             // ── Main layout ───────────────────────────────────────────────
             VStack(spacing: 0) {
-                // Enemy section (top ~30%)
+                // Botón EXIT en la parte superior
+                HStack {
+                    Button(action: {
+                        vm.pauseBGM()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 16))
+                            Text("EXIT")
+                                .font(.system(size: 12, weight: .bold, design: .rounded))
+                        }
+                        .foregroundColor(Color.white.opacity(0.7))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule()
+                                .fill(Color.black.opacity(0.4))
+                                .overlay(
+                                    Capsule()
+                                        .strokeBorder(Color.white.opacity(0.2), lineWidth: 1)
+                                )
+                        )
+                    }
+                    
+                    Spacer()
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                
+                // Enemy section
                 enemySection
-                    .padding(.top, 50)
+                    .padding(.top, 10)
                     .padding(.horizontal, 14)
                 
                 Spacer()
                 
-                // Event feed (middle)
+                // Event feed
                 EventFeedView(event: vm.animatingEvent)
                     .frame(maxWidth: .infinity)
                 
@@ -64,7 +94,7 @@ struct BattleView: View {
                     .padding(.bottom, 12)
             }
             
-            // ── Active units (drag layer) ─────────────────────────────────
+            // ── Active units ─────────────────────────────────
             activeUnitsLayer
             
             // ── Attack slot indicators ────────────────────────────────────
@@ -80,14 +110,11 @@ struct BattleView: View {
                 startTurnButton
             }
             
-                        
             // ── Game Over overlay ─────────────────────────────────────────
             if case .gameOver(let won) = vm.phase {
                 gameOverOverlay(won: won)
             }
             
-            // En el ZStack principal de BattleView, añade esto después del gameOverOverlay:
-
             // ── Wave Transition Overlay ─────────────────────────────────────────
             if vm.showWaveTransition {
                 VStack {
@@ -96,7 +123,8 @@ struct BattleView: View {
                         .font(.system(size: 48, weight: .black, design: .rounded))
                         .foregroundColor(.yellow)
                         .shadow(color: .orange, radius: 10)
-                        .transition(.asymmetric(insertion: .scale, removal: .opacity));                    Text("NEW CHALLENGER APPROACHES!")
+                        .transition(.asymmetric(insertion: .scale, removal: .opacity))
+                    Text("NEW CHALLENGER APPROACHES!")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
                         .foregroundColor(Color.white.opacity(0.8))
                         .padding(.top, 8)
@@ -110,6 +138,7 @@ struct BattleView: View {
             }
         }
         .ignoresSafeArea()
+        .navigationBarHidden(true)
     }
     
     // MARK: - Background
@@ -129,7 +158,6 @@ struct BattleView: View {
     // MARK: - Enemy section
     var enemySection: some View {
         VStack(spacing: 8) {
-            // Turn counter y Wave info
             HStack {
                 Text("TURN \(vm.turnNumber)")
                     .font(.system(size: 11, weight: .black, design: .rounded))
@@ -152,14 +180,12 @@ struct BattleView: View {
                 }
             }
             
-            // Enemy HP bars
             EnemyHPBarsView(
                 enemy: vm.enemy,
                 shake: vm.enemyShake,
                 flashHit: vm.showEnemyHit
             )
             
-            // Enemy sprite placeholder
             ZStack {
                 Ellipse()
                     .fill(vm.enemy.color.opacity(0.18))
@@ -225,7 +251,6 @@ struct BattleView: View {
                         }
                         .onEnded { _ in vm.endDragging() }
                 )
-                // Animación simple para TODAS las unidades
                 .animation(.spring(response: 0.4, dampingFraction: 0.7), value: vm.getVisualX(for: unit))
                 .zIndex(vm.draggedUnitId == unit.id ? 10 : Double(slotIdx))
             }
@@ -236,7 +261,6 @@ struct BattleView: View {
     var queueRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 6) {
-                // Show queue in roster order
                 let queue = vm.queueUnits
                 ForEach(Array(queue.enumerated()), id: \.element.unit.id) { offset, item in
                     VStack(spacing: 2) {
@@ -246,7 +270,7 @@ struct BattleView: View {
                         QueueUnitView(
                             unit: item.unit,
                             queuePosition: item.index,
-                            isNextInRotation: offset < 3  // ← Las primeras 3 en la UI son las siguientes
+                            isNextInRotation: offset < 3
                         )
                     }
                 }
@@ -271,67 +295,59 @@ struct BattleView: View {
         .cornerRadius(12)
     }
     
-    // BattleView.swift - Añade este botón junto al Start Turn button
-
-    // MARK: - Start Turn button (modificado para incluir el botón skip)
+    // MARK: - Start Turn button
     var startTurnButton: some View {
         VStack {
             Spacer()
             Spacer()
             
             HStack(spacing: 20) {
-                // Botón SKIP WAVE (solo visible en modo idle)
-                if case .idle = vm.phase {
-                    Button(action: { vm.skipCurrentWave() }) {
-                        HStack(spacing: 6) {
-                            Image(systemName: "forward.fill")
-                                .font(.system(size: 12, weight: .black))
-                            Text("SKIP")
-                                .font(.system(size: 13, weight: .black, design: .rounded))
-                                .kerning(1.0)
-                        }
-                        .foregroundColor(Color.white)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 14)
-                        .background(
-                            Capsule()
-                                .fill(
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [Color.purple, Color(red: 0.6, green: 0.2, blue: 0.8)]),
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                        )
-                        .shadow(color: Color.purple.opacity(0.4), radius: 8, x: 0, y: 4)
+                Button(action: { vm.skipCurrentWave() }) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "forward.fill")
+                            .font(.system(size: 12, weight: .black))
+                        Text("SKIP")
+                            .font(.system(size: 13, weight: .black, design: .rounded))
+                            .kerning(1.0)
                     }
+                    .foregroundColor(Color.white)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 14)
+                    .background(
+                        Capsule()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.purple, Color(red: 0.6, green: 0.2, blue: 0.8)]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    )
+                    .shadow(color: Color.purple.opacity(0.4), radius: 8, x: 0, y: 4)
                 }
                 
-                // Botón START TURN original
-                if case .idle = vm.phase {
-                    Button(action: { vm.startTurn() }) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "play.fill")
-                                .font(.system(size: 14, weight: .black))
-                            Text("START TURN")
-                                .font(.system(size: 15, weight: .black, design: .rounded))
-                                .kerning(1.2)
-                        }
-                        .foregroundColor(Color.black)
-                        .padding(.horizontal, 28)
-                        .padding(.vertical, 14)
-                        .background(
-                            Capsule()
-                                .fill(
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [Color.yellow, Color(red: 1.0, green: 0.7, blue: 0.1)]),
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                        )
-                        .shadow(color: Color.yellow.opacity(0.5), radius: 12, x: 0, y: 4)
+                Button(action: { vm.startTurn() }) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "play.fill")
+                            .font(.system(size: 14, weight: .black))
+                        Text("START TURN")
+                            .font(.system(size: 15, weight: .black, design: .rounded))
+                            .kerning(1.2)
                     }
+                    .foregroundColor(Color.black)
+                    .padding(.horizontal, 28)
+                    .padding(.vertical, 14)
+                    .background(
+                        Capsule()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.yellow, Color(red: 1.0, green: 0.7, blue: 0.1)]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    )
+                    .shadow(color: Color.yellow.opacity(0.5), radius: 12, x: 0, y: 4)
                 }
             }
             .padding(.bottom, unitBottomOffset + 100)
@@ -339,34 +355,69 @@ struct BattleView: View {
         .allowsHitTesting(true)
     }
     
-    // MARK: - Game Over overlay
+    // En BattleView.swift, modifica el gameOverOverlay:
+
     func gameOverOverlay(won: Bool) -> some View {
         ZStack {
-            Color.black.opacity(0.75).ignoresSafeArea()
+            Color.black.opacity(0.9).ignoresSafeArea()
             
-            VStack(spacing: 24) {
-                Text(won ? "🏆 VICTORY!" : "💀 GAME OVER")
-                    .font(.system(size: 36, weight: .black, design: .rounded))
+            VStack(spacing: 30) {
+                Image(systemName: won ? "crown.fill" : "skull.fill")
+                    .font(.system(size: 70))
+                    .foregroundColor(won ? .yellow : .red)
+                
+                Text(won ? "VICTORY!" : "GAME OVER")
+                    .font(.system(size: 42, weight: .black, design: .rounded))
                     .foregroundColor(won ? Color.yellow : Color.red)
                 
                 Text(won ? "Enemy defeated!" : "Your team was wiped out!")
                     .font(.system(size: 16, weight: .semibold, design: .rounded))
                     .foregroundColor(Color.white.opacity(0.8))
                 
-                Button(action: { vm.restart() }) {
-                    Text("PLAY AGAIN")
-                        .font(.system(size: 16, weight: .black, design: .rounded))
-                        .foregroundColor(Color.black)
-                        .padding(.horizontal, 36)
-                        .padding(.vertical, 16)
-                        .background(Capsule().fill(won ? Color.yellow : Color.red))
-                        .shadow(color: (won ? Color.yellow : Color.red).opacity(0.5), radius: 12)
+                Text("WAVE \(vm.currentWave - 1)")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundColor(Color.yellow)
+                
+                Button(action: {
+                    vm.restart()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        NotificationCenter.default.post(name: NSNotification.Name("UpdateHighestWave"), object: nil)
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let window = windowScene.windows.first {
+                            window.rootViewController?.dismiss(animated: true)
+                        }
+                    }
+                }) {
+                    HStack(spacing: 12) {
+                        Image(systemName: "arrow.left.circle.fill")
+                            .font(.system(size: 20))
+                        Text("BACK TO MENU")
+                            .font(.system(size: 18, weight: .black, design: .rounded))
+                    }
+                    .foregroundColor(Color.black)
+                    .padding(.horizontal, 40)
+                    .padding(.vertical, 16)
+                    .background(
+                        Capsule()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.yellow, Color.orange]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                    )
+                    .shadow(color: (won ? Color.yellow : Color.red).opacity(0.5), radius: 12)
                 }
             }
             .padding(40)
             .background(
-                RoundedRectangle(cornerRadius: 24)
+                RoundedRectangle(cornerRadius: 30)
                     .fill(Color(red: 0.06, green: 0.07, blue: 0.18))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 30)
+                            .strokeBorder(won ? Color.yellow.opacity(0.3) : Color.red.opacity(0.3), lineWidth: 1)
+                    )
             )
             .padding(30)
         }

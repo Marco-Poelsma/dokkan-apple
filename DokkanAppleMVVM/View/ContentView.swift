@@ -9,11 +9,10 @@ import SwiftUI
 // Root is BattleView, launched from DokkanAppleApp.
 // ContentView is kept here so the old ViewModel reference compiles;
 // delete this file entirely once you remove ViewModel.swift too.
-struct ContentView: View {
-    @EnvironmentObject var viewModel: BattleViewModel
+// ContentView.swift
 
+struct ContentView: View {
     var body: some View {
-        // Redirect to the battle view for any legacy entry point
-        BattleView()
+        HomeView()
     }
 }

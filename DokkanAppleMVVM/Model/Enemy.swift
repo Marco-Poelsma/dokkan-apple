@@ -40,6 +40,6 @@ class Enemy: ObservableObject {
     }
     
     static func defaultEnemy() -> Enemy {
-        Enemy(name: "Frieza", atk: 15_000, color: Color(red: 0.6, green: 0.0, blue: 0.6))
+        Enemy(name: "Janemba", atk: 15_000, color: Color(red: 0.6, green: 0.0, blue: 0.6))
     }
 }

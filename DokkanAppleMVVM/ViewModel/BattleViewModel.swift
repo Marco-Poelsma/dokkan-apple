@@ -1,8 +1,9 @@
 // BattleViewModel.swift
-// ViewModel principal - lógica completa del juego
+// ViewModel principal - lógica completa del juego con efectos de sonido y BGM
 
 import Foundation
 import SwiftUI
+import AVFoundation
 
 // MARK: - Game Phase
 enum GamePhase {
@@ -56,12 +57,21 @@ class BattleViewModel: ObservableObject {
     // ── Drag ──────────────────────────────────────────────────────────────
     private let screenWidth = UIScreen.main.bounds.width
     
+    // ── Sound Manager ─────────────────────────────────────────────────────
+    private let soundManager = SoundManager.shared
+    
     // MARK: - Init
     init() {
         let savedWave = UserDefaults.standard.integer(forKey: "highestWave")
         highestWave = savedWave > 0 ? savedWave : 1
         roster = UnitFactory.makeTeam().shuffled()
         generateEnemyAttacks()
+        
+        // Pre-cargar sonidos para evitar delay
+        soundManager.preloadSounds()
+        
+        // Iniciar música de fondo (BGM)
+        soundManager.playBGM()
     }
     
     // MARK: - Active units
@@ -210,17 +220,40 @@ class BattleViewModel: ObservableObject {
         }
     }
     
+    // MARK: - Apply Event with Sounds
     private func applyEvent(_ event: BattleEvent) {
         switch event.kind {
-        case .unitAttacks(_, let dmg, _, _, let dodged):
+        case .unitAttacks(let unit, let dmg, let type, let isCrit, let dodged):
             if !dodged {
                 enemy.receiveDamage(dmg)
                 triggerEnemyHit()
+                
+                // Reproducir sonido según tipo de ataque
+                switch type {
+                case .normal:
+                    soundManager.playSound(named: "uhit", volume: 0.7)
+                case .superAttack:
+                    soundManager.playSound(named: "sa", volume: 1.0)
+                case .additionalAttack:
+                    soundManager.playSound(named: "uhit", volume: 0.5)
+                }
+                
+                // Sonido de crítico
+                if isCrit {
+                    soundManager.playSound(named: "uhit", volume: 0.8)
+                }
+            } else {
+                // Sonido de esquivar
+                soundManager.playSound(named: "dodge", volume: 80.0)
             }
+            
         case .enemyAttacks(_, let target, let dmg, let dodged):
             if !dodged {
                 teamHP = max(0, teamHP - dmg)
                 triggerTeamHit(unitId: target.id)
+                soundManager.playSound(named: "ehit", volume: 0.8)
+            } else {
+                soundManager.playSound(named: "dodge", volume: 80.0)
             }
         }
         checkGameOver()
@@ -251,12 +284,19 @@ class BattleViewModel: ObservableObject {
             spawnNextEnemy()
         } else if teamHP <= 0 {
             phase = .gameOver(won: false)
+            soundManager.playSound(named: "death", volume: 1.0)
+            
+            // Opcional: Bajar volumen del BGM o pausarlo en Game Over
+            soundManager.setBGMVolume(0.2)
         }
     }
     
     // MARK: - Spawn next enemy
     private func spawnNextEnemy() {
         currentWave += 1
+        
+        // Sonido de nueva wave
+        soundManager.playSound(named: "lvlup", volume: 0.9)
         
         if currentWave > highestWave {
             highestWave = currentWave
@@ -298,6 +338,9 @@ class BattleViewModel: ObservableObject {
         enemy = newEnemy
         generateEnemyAttacks()
         
+        // Restaurar volumen del BGM si estaba bajo
+        soundManager.setBGMVolume(0.5)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }
             if case .resolving = self.phase {
@@ -332,6 +375,10 @@ class BattleViewModel: ObservableObject {
     
     // MARK: - Restart
     func restart() {
+        // Asegurar que BGM continúa sonando al reiniciar
+        soundManager.setBGMVolume(0.5)
+        soundManager.playBGM()
+        
         roster = UnitFactory.makeTeam().shuffled()
         enemy = Enemy.defaultEnemy()
         teamHP = teamMaxHP
@@ -345,6 +392,21 @@ class BattleViewModel: ObservableObject {
         lastEventText = ""
         showWaveTransition = false
         generateEnemyAttacks()
+    }
+    
+    // MARK: - Skip Wave (Developer/Testing)
+    func skipCurrentWave() {
+        // Solo permitir skip cuando no se está resolviendo un turno
+        guard case .idle = phase else { return }
+        
+        // Sonido de skip (opcional)
+        soundManager.playSound(named: "lvlup", volume: 0.7)
+        
+        // Matar al enemigo instantáneamente
+        enemy.remainingHP = 0
+        
+        // Forzar el spawn del siguiente enemigo
+        spawnNextEnemy()
     }
     
     // MARK: - Drag logic
@@ -398,10 +460,6 @@ class BattleViewModel: ObservableObject {
         let ri = activeSlotIndices[ai]
         let rj = activeSlotIndices[bi]
         roster.swapAt(ri, rj)
-        
-        #if os(iOS)
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        #endif
     }
     
     private func slotXFor(_ unit: TeamUnit) -> CGFloat {
@@ -431,15 +489,23 @@ class BattleViewModel: ObservableObject {
         enemyAttackSlots.filter { $0 == slot }.count
     }
     
-    // MARK: - Skip Wave (Developer/Testing)
-    func skipCurrentWave() {
-        // Solo permitir skip cuando no se está resolviendo un turno
-        guard case .idle = phase else { return }
-        
-        // Matar al enemigo instantáneamente
-        enemy.remainingHP = 0
-        
-        // Forzar el spawn del siguiente enemigo
-        spawnNextEnemy()
+    // MARK: - BGM Control Methods (Opcional - para control externo)
+    func pauseBGM() {
+        soundManager.pauseBGM()
+    }
+    
+    func resumeBGM() {
+        soundManager.playBGM()
+    }
+    
+    func setBGMVolume(_ volume: Float) {
+        soundManager.setBGMVolume(volume)
+    }
+    
+    // MARK: - Cleanup (llamar cuando se destruye el ViewModel)
+    deinit {
+        // No detenemos el BGM para que pueda continuar entre vistas
+        // Solo limpiamos si es necesario
+        print("BattleViewModel deinit - BGM continúa reproduciéndose")
     }
 }

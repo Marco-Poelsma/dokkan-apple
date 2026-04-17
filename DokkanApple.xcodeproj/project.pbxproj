@@ -28,6 +28,17 @@
 		EF453DC52F76EE8C00466E4F /* ArrowsIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DC42F76EE8C00466E4F /* ArrowsIndicator.swift */; };
 		EF453DC82F76EEE800466E4F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DC72F76EEE800466E4F /* Player.swift */; };
 		EF453DCB2F76F51400466E4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF453DCA2F76F51400466E4F /* ContentView.swift */; };
+		EF47B7D22F9273AD002282FD /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF47B7D12F9273AD002282FD /* SoundManager.swift */; };
+		EF47B7D92F92756A002282FD /* death.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EF47B7D52F927569002282FD /* death.mp3 */; };
+		EF47B7DA2F92756A002282FD /* bgm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EF47B7D62F92756A002282FD /* bgm.mp3 */; };
+		EF47B7DB2F92756A002282FD /* lvlup.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EF47B7D72F92756A002282FD /* lvlup.mp3 */; };
+		EF47B7DC2F92756A002282FD /* uhit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EF47B7D82F92756A002282FD /* uhit.mp3 */; };
+		EF47B7E22F927AFF002282FD /* dodge.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EF47B7DF2F927AFF002282FD /* dodge.mp3 */; };
+		EF47B7E32F927AFF002282FD /* ehit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EF47B7E02F927AFF002282FD /* ehit.mp3 */; };
+		EF47B7E92F927DEB002282FD /* sa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EF47B7E82F927DEB002282FD /* sa.mp3 */; };
+		EF47B7F82F9283F7002282FD /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF47B7F72F9283F7002282FD /* HomeViewModel.swift */; };
+		EF47B7FB2F92841F002282FD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF47B7FA2F92841F002282FD /* HomeView.swift */; };
+		EF47B7FE2F928458002282FD /* BattleWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF47B7FD2F928458002282FD /* BattleWrapperView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +65,17 @@
 		EF453DC42F76EE8C00466E4F /* ArrowsIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowsIndicator.swift; sourceTree = "<group>"; };
 		EF453DC72F76EEE800466E4F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		EF453DCA2F76F51400466E4F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EF47B7D12F9273AD002282FD /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		EF47B7D52F927569002282FD /* death.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = death.mp3; sourceTree = "<group>"; };
+		EF47B7D62F92756A002282FD /* bgm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bgm.mp3; sourceTree = "<group>"; };
+		EF47B7D72F92756A002282FD /* lvlup.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lvlup.mp3; sourceTree = "<group>"; };
+		EF47B7D82F92756A002282FD /* uhit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = uhit.mp3; sourceTree = "<group>"; };
+		EF47B7DF2F927AFF002282FD /* dodge.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dodge.mp3; sourceTree = "<group>"; };
+		EF47B7E02F927AFF002282FD /* ehit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ehit.mp3; sourceTree = "<group>"; };
+		EF47B7E82F927DEB002282FD /* sa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = sa.mp3; path = ../../../../Downloads/sa.mp3; sourceTree = "<group>"; };
+		EF47B7F72F9283F7002282FD /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		EF47B7FA2F92841F002282FD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		EF47B7FD2F928458002282FD /* BattleWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleWrapperView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +108,7 @@
 		EF13126B2819749D00061056 /* DokkanAppleMVVM */ = {
 			isa = PBXGroup;
 			children = (
+				EF47B7D42F927554002282FD /* Sounds */,
 				EF453DD12F76F95400466E4F /* App */,
 				EF13128A281974CE00061056 /* Model */,
 				EF1312922819760900061056 /* View */,
@@ -124,6 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				EF453D9F2F76E5EB00466E4F /* BattleViewModel.swift */,
+				EF47B7D12F9273AD002282FD /* SoundManager.swift */,
+				EF47B7F72F9283F7002282FD /* HomeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -140,6 +165,8 @@
 				EF453DBE2F76EE5700466E4F /* UnitView.swift */,
 				EF453DC12F76EE6F00466E4F /* ArrowView.swift */,
 				EF453DCA2F76F51400466E4F /* ContentView.swift */,
+				EF47B7FA2F92841F002282FD /* HomeView.swift */,
+				EF47B7FD2F928458002282FD /* BattleWrapperView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -150,6 +177,20 @@
 				EF453DA82F76E6E400466E4F /* DokkanAppleApp.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		EF47B7D42F927554002282FD /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				EF47B7E02F927AFF002282FD /* ehit.mp3 */,
+				EF47B7DF2F927AFF002282FD /* dodge.mp3 */,
+				EF47B7D82F92756A002282FD /* uhit.mp3 */,
+				EF47B7D62F92756A002282FD /* bgm.mp3 */,
+				EF47B7E82F927DEB002282FD /* sa.mp3 */,
+				EF47B7D52F927569002282FD /* death.mp3 */,
+				EF47B7D72F92756A002282FD /* lvlup.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,8 +250,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF47B7D92F92756A002282FD /* death.mp3 in Resources */,
+				EF47B7DA2F92756A002282FD /* bgm.mp3 in Resources */,
+				EF47B7E32F927AFF002282FD /* ehit.mp3 in Resources */,
+				EF47B7DC2F92756A002282FD /* uhit.mp3 in Resources */,
+				EF47B7E92F927DEB002282FD /* sa.mp3 in Resources */,
+				EF47B7DB2F92756A002282FD /* lvlup.mp3 in Resources */,
 				EF1312742819749E00061056 /* Preview Assets.xcassets in Resources */,
 				EF1312712819749E00061056 /* Assets.xcassets in Resources */,
+				EF47B7E22F927AFF002282FD /* dodge.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,18 +272,22 @@
 				EF453DC22F76EE6F00466E4F /* ArrowView.swift in Sources */,
 				EF453DA62F76E61300466E4F /* AttackSlotIndicatorView.swift in Sources */,
 				EF453DA32F76E5FB00466E4F /* BattleView.swift in Sources */,
+				EF47B7FE2F928458002282FD /* BattleWrapperView.swift in Sources */,
 				EF453DA02F76E5EB00466E4F /* BattleViewModel.swift in Sources */,
 				EF453DBB2F76EE3B00466E4F /* Unit.swift in Sources */,
+				EF47B7FB2F92841F002282FD /* HomeView.swift in Sources */,
 				EF453D912F76E4A200466E4F /* TeamUnit.swift in Sources */,
 				EF453DB82F76EC6D00466E4F /* UnitPosition.swift in Sources */,
 				EF453D9A2F76E52F00466E4F /* HPBarView.swift in Sources */,
 				EF453DCB2F76F51400466E4F /* ContentView.swift in Sources */,
+				EF47B7D22F9273AD002282FD /* SoundManager.swift in Sources */,
 				EF453D8E2F76E45900466E4F /* Enemy.swift in Sources */,
 				EF453DAD2F76E77E00466E4F /* BattleEvent.swift in Sources */,
 				EF0339372F71A12200EEB23F /* Sprite.swift in Sources */,
 				EF453D9D2F76E54A00466E4F /* EventFeedView.swift in Sources */,
 				EF453D972F76E4F400466E4F /* QueueUnitView.swift in Sources */,
 				EF453DBF2F76EE5700466E4F /* UnitView.swift in Sources */,
+				EF47B7F82F9283F7002282FD /* HomeViewModel.swift in Sources */,
 				EF453DC52F76EE8C00466E4F /* ArrowsIndicator.swift in Sources */,
 				EF453D942F76E4DB00466E4F /* TeamUnitView.swift in Sources */,
 				EF453DC82F76EEE800466E4F /* Player.swift in Sources */,
