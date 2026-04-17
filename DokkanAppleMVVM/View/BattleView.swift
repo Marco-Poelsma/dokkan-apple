@@ -68,7 +68,7 @@ struct BattleView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 16)
-                .padding(.top, 8)
+                .padding(.top, 24)
                 
                 // Enemy section
                 enemySection

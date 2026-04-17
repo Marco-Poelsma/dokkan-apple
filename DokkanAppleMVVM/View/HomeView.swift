@@ -19,88 +19,86 @@ struct HomeView: View {
             )
             .ignoresSafeArea()
             
-            VStack(spacing: 40) {
-                Spacer()
+            VStack(spacing: 20) {  // ← Reducido de 40 a 20
                 
-                // Logo
-                VStack(spacing: 10) {
+                // Logo (más pequeño)
+                VStack(spacing: 5) {  // ← Reducido de 10 a 5
                     Text("⚔️")
-                        .font(.system(size: 70))
+                        .font(.system(size: 50))  // ← Reducido de 70 a 50
                     
                     Text("DOKKAN APPLE")
-                        .font(.system(size: 36, weight: .black, design: .rounded))
+                        .font(.system(size: 28, weight: .black, design: .rounded))  // ← Reducido
                         .foregroundColor(Color.yellow)
                     
                     Text("BATTLE ARENA")
-                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .font(.system(size: 12, weight: .bold, design: .rounded))  // ← Reducido
                         .foregroundColor(Color.white.opacity(0.6))
                         .kerning(2)
                 }
+                .padding(.top, 30)  // ← Añadido padding top pequeño
                 
-                Spacer()
-                
-                // Max Score Card
-                VStack(spacing: 12) {
+                // Max Score Card (más compacta)
+                VStack(spacing: 8) {  // ← Reducido de 12 a 8
                     Text("🏆 HIGHEST WAVE 🏆")
-                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .font(.system(size: 12, weight: .bold, design: .rounded))  // ← Reducido
                         .foregroundColor(Color.yellow.opacity(0.8))
                     
                     Text("\(highestWave)")
-                        .font(.system(size: 60, weight: .black, design: .rounded))
+                        .font(.system(size: 48, weight: .black, design: .rounded))  // ← Reducido de 60 a 48
                         .foregroundColor(Color.white)
                     
                     Text("waves cleared")
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .font(.system(size: 10, weight: .medium, design: .rounded))  // ← Reducido
                         .foregroundColor(Color.white.opacity(0.5))
                 }
-                .padding(30)
-                .frame(width: 280)
+                .padding(20)  // ← Reducido de 30 a 20
+                .frame(width: 250)  // ← Reducido de 280 a 250
                 .background(
-                    RoundedRectangle(cornerRadius: 20)
+                    RoundedRectangle(cornerRadius: 16)  // ← Reducido de 20 a 16
                         .fill(Color.white.opacity(0.08))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 20)
+                            RoundedRectangle(cornerRadius: 16)
                                 .strokeBorder(Color.white.opacity(0.15), lineWidth: 1)
                         )
                 )
                 
-                Spacer()
-                
-                // Play Button
+                // Play Button (más compacto)
                 Button(action: {
                     showGame = true
                 }) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 10) {  // ← Reducido de 12 a 10
                         Image(systemName: "play.fill")
-                            .font(.system(size: 20, weight: .black))
+                            .font(.system(size: 16, weight: .black))  // ← Reducido de 20 a 16
                         Text("START BATTLE")
-                            .font(.system(size: 20, weight: .black, design: .rounded))
+                            .font(.system(size: 16, weight: .black, design: .rounded))  // ← Reducido
                     }
                     .foregroundColor(Color.black)
-                    .padding(.horizontal, 50)
-                    .padding(.vertical, 18)
+                    .padding(.horizontal, 40)  // ← Reducido de 50 a 40
+                    .padding(.vertical, 14)  // ← Reducido de 18 a 14
                     .background(
                         Capsule()
                             .fill(Color.yellow)
-                            .shadow(color: Color.yellow.opacity(0.5), radius: 10)
+                            .shadow(color: Color.yellow.opacity(0.5), radius: 8)  // ← Reducido de 10 a 8
                     )
                 }
+                .padding(.top, 5)  // ← Añadido padding top pequeño
                 
-                // Reset button (opcional)
+                // Reset button
                 Button(action: {
                     UserDefaults.standard.set(1, forKey: "highestWave")
                     highestWave = 1
                 }) {
                     Text("Reset Score")
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .font(.system(size: 10, weight: .medium, design: .rounded))  // ← Reducido de 12 a 10
                         .foregroundColor(Color.white.opacity(0.4))
                         .underline()
                 }
-                .padding(.top, 10)
+                .padding(.top, 5)
                 
-                Spacer()
+                Spacer(minLength: 20)  // ← Spacer más pequeño al final
             }
-            .padding()
+            .padding(.horizontal)  // Solo padding horizontal
+            .padding(.vertical, 10)  // Padding vertical reducido
         }
         .fullScreenCover(isPresented: $showGame) {
             BattleWrapperView()
