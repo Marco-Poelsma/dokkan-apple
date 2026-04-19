@@ -110,7 +110,7 @@ struct EventFeedView: View {
     }
 }
 
-// MARK: - Full-screen flash for Super Attacks
+// MARK: Full-screen flash for Super Attacks
 struct SAFlashView: View {
     let color: Color
     @State private var opacity: Double = 0.5
