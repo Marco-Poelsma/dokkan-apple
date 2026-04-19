@@ -14,16 +14,16 @@ enum GamePhase {
 
 class BattleViewModel: ObservableObject {
     
-    // ── Unidades ──────────────────────────────────────────────────────────
+    // MARK: Unidades
     @Published var roster: [TeamUnit] = []   // orden completo (7 units)
     @Published var draggedUnitId: UUID? = nil
     
-    // ── Enemigo & HP del equipo ───────────────────────────────────────────
+    // MARK: Enemigo & HP del equipo
     @Published var enemy: Enemy = Enemy.defaultEnemy()
     @Published var teamHP: Int = 200_000
     let teamMaxHP: Int = 200_000
     
-    // ── Fase del enemigo (wave) ───────────────────────────────────────────
+    // MARK: Fase del enemigo (wave)
     @Published var currentWave: Int = 1
     @Published var highestWave: Int {
         didSet {
@@ -31,20 +31,20 @@ class BattleViewModel: ObservableObject {
         }
     }
     
-    // ── Turno ─────────────────────────────────────────────────────────────
+    // MARK: Turno
     @Published var turnNumber: Int = 1
     @Published var activeStartIndex: Int = 0
     
-    // ── Ataques enemigos por turno: slot 0-3 ─────────────────────────────
+    // MARK: Ataques enemigos por turno: slot 0-3
     @Published var enemyAttackSlots: [EnemyAttackSlot] = []
     
-    // ── Resolución de turno ───────────────────────────────────────────────
+    // MARK: Resolución de turno
     @Published var phase: GamePhase = .idle
     @Published var currentEvents: [BattleEvent] = []
     @Published var currentEventIndex: Int = 0
     @Published var animatingEvent: BattleEvent? = nil
     
-    // ── UI feedback ───────────────────────────────────────────────────────
+    // MARK: UI feedback
     @Published var showEnemyHit: Bool = false
     @Published var showTeamHit: Bool = false
     @Published var hitUnitId: UUID? = nil
@@ -54,13 +54,13 @@ class BattleViewModel: ObservableObject {
     @Published var showWaveTransition: Bool = false
     @Published var waveTransitionText: String = ""
     
-    // ── Drag ──────────────────────────────────────────────────────────────
+    // MARK: Drag
     private let screenWidth = UIScreen.main.bounds.width
     
-    // ── Sound Manager ─────────────────────────────────────────────────────
+    // MARK: Sound Manager
     private let soundManager = SoundManager.shared
     
-    // MARK: - Init
+    // MARK: Init
     init() {
         let savedWave = UserDefaults.standard.integer(forKey: "highestWave")
         highestWave = savedWave > 0 ? savedWave : 1
@@ -74,7 +74,7 @@ class BattleViewModel: ObservableObject {
         soundManager.playBGM()
     }
     
-    // MARK: - Active units
+    // MARK: Active units
     var activeUnits: [TeamUnit] {
         let indices = activeSlotIndices
         return indices.map { roster[$0] }
@@ -91,7 +91,7 @@ class BattleViewModel: ObservableObject {
             .map { (unit: $0.element, index: $0.offset) }
     }
     
-    // MARK: - Generate enemy attacks
+    // MARK: Generate enemy attacks
     private func generateEnemyAttacks() {
         enemyAttackSlots = []
         let attackCount = Int.random(in: 1...3)
@@ -100,7 +100,7 @@ class BattleViewModel: ObservableObject {
         enemyAttackSlots = Array(slots.prefix(attackCount)).sorted()
     }
     
-    // MARK: - Advance turn
+    // MARK: Advance turn
     private func advanceTurn() {
         activeStartIndex = (activeStartIndex + 3) % roster.count
         turnNumber += 1
@@ -108,7 +108,7 @@ class BattleViewModel: ObservableObject {
         generateEnemyAttacks()
     }
     
-    // MARK: - Start Turn
+    // MARK: Start Turn
     func startTurn() {
         guard case .idle = phase else { return }
         phase = .resolving
@@ -120,7 +120,7 @@ class BattleViewModel: ObservableObject {
         playNextEvent()
     }
     
-    // MARK: - Build events
+    // MARK: Build events
     private func buildTurnEvents() -> [BattleEvent] {
         var events: [BattleEvent] = []
         let units = activeUnits
@@ -179,7 +179,7 @@ class BattleViewModel: ObservableObject {
         return base
     }
     
-    // MARK: - Animate events
+    // MARK: Animate events
     private func playNextEvent() {
         if case .gameOver = phase { return }
         
@@ -220,7 +220,7 @@ class BattleViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Apply Event with Sounds
+    // MARK: Apply Event with Sounds
     private func applyEvent(_ event: BattleEvent) {
         switch event.kind {
         case .unitAttacks(let unit, let dmg, let type, let isCrit, let dodged):
@@ -291,7 +291,7 @@ class BattleViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Spawn next enemy
+    // MARK: Spawn next enemy
     private func spawnNextEnemy() {
         currentWave += 1
         
@@ -373,7 +373,7 @@ class BattleViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Restart
+    // MARK: Restart
     func restart() {
         // Asegurar que BGM continúa sonando al reiniciar
         soundManager.setBGMVolume(0.5)
@@ -394,7 +394,7 @@ class BattleViewModel: ObservableObject {
         generateEnemyAttacks()
     }
     
-    // MARK: - Skip Wave (Developer/Testing)
+    // MARK: Skip Wave (Developer/Testing)
     func skipCurrentWave() {
         // Solo permitir skip cuando no se está resolviendo un turno
         guard case .idle = phase else { return }
@@ -409,7 +409,7 @@ class BattleViewModel: ObservableObject {
         spawnNextEnemy()
     }
     
-    // MARK: - Drag logic
+    // MARK: Drag logic
     func startDragging(unitId: UUID) {
         guard case .idle = phase else { return }
         draggedUnitId = unitId
@@ -489,7 +489,7 @@ class BattleViewModel: ObservableObject {
         enemyAttackSlots.filter { $0 == slot }.count
     }
     
-    // MARK: - BGM Control Methods (Opcional - para control externo)
+    // MARK: BGM Control Methods (Opcional - para control externo)
     func pauseBGM() {
         soundManager.pauseBGM()
     }
@@ -502,7 +502,7 @@ class BattleViewModel: ObservableObject {
         soundManager.setBGMVolume(volume)
     }
     
-    // MARK: - Cleanup (llamar cuando se destruye el ViewModel)
+    // MARK: Cleanup (llamar cuando se destruye el ViewModel)
     deinit {
         // No detenemos el BGM para que pueda continuar entre vistas
         // Solo limpiamos si es necesario
