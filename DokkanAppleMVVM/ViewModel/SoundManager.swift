@@ -31,7 +31,7 @@ class SoundManager: ObservableObject {
         }
     }
     
-    // MARK: - BGM Setup
+    // MARK: BGM Setup
     private func setupBGM() {
         guard let url = getSoundURL(named: "bgm", withExtension: "mp3") else {
             print("❌ No se encontró bgm.mp3 en la carpeta Sounds")
@@ -88,7 +88,7 @@ class SoundManager: ObservableObject {
         }
     }
     
-    // MARK: - Efectos de sonido
+    // MARK: Efectos de sonido
     private func getSoundURL(named soundName: String, withExtension ext: String = "mp3") -> URL? {
         // Buscar en la carpeta Sounds
         if let soundURL = Bundle.main.url(forResource: soundName,
