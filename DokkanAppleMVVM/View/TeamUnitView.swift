@@ -13,7 +13,7 @@ struct TeamUnitView: View {
     
     var body: some View {
         ZStack {
-            // --- Card background ---
+            // MARK: Card background
             RoundedRectangle(cornerRadius: 14)
                 .fill(unit.color.opacity(unit.isBeingDragged ? 1.0 : 0.92))
                 .overlay(
@@ -29,7 +29,7 @@ struct TeamUnitView: View {
                     .transition(.opacity)
             }
             
-            // --- Content ---
+            // MARK: Content
             VStack(spacing: 3) {
                 // Symbol / letter
                 Text(unit.symbol)
