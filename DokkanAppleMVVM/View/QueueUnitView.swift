@@ -4,7 +4,7 @@ import SwiftUI
 struct QueueUnitView: View {
     let unit: TeamUnit
     let queuePosition: Int   // visual order in the queue row
-    let isNextInRotation: Bool  // ← NUEVO: indica si está entre las 3 siguientes
+    let isNextInRotation: Bool  // indica si está entre las 3 siguientes
     
     var body: some View {
         ZStack {
