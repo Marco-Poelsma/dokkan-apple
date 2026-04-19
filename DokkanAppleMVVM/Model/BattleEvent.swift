@@ -3,18 +3,18 @@
 
 import Foundation
 
-// MARK: - Attack Slot (cuando llega el ataque enemigo)
+// MARK: Attack Slot (cuando llega el ataque enemigo)
 // 0 = antes del slot1, 1 = tras slot1, 2 = tras slot2, 3 = tras slot3
 typealias EnemyAttackSlot = Int
 
-// MARK: - Attack Type
+// MARK: Attack Type
 enum AttackType {
     case normal
     case superAttack   // the one big hit per turn
     case additionalAttack
 }
 
-// MARK: - Single combat event
+// MARK: Single combat event
 struct BattleEvent: Identifiable {
     let id = UUID()
     let kind: EventKind
@@ -38,7 +38,7 @@ struct BattleEvent: Identifiable {
     }
 }
 
-// MARK: - Full turn result
+// MARK: Full turn result
 struct TurnResult {
     var events: [BattleEvent] = []
     var totalDamageToEnemy: Int = 0
