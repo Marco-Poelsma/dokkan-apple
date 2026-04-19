@@ -9,7 +9,7 @@ class HomeViewModel: ObservableObject {
         loadHighestWave()
     }
     
-    func loadHighestWave() {  // ← Cambiado a public
+    func loadHighestWave() {
         highestWave = UserDefaults.standard.integer(forKey: "highestWave")
         if highestWave == 0 {
             highestWave = 1
