@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-// MARK: - Team HP bar
+// MARK: Team HP bar
 struct TeamHPBarView: View {
     let current: Int
     let max: Int
@@ -49,7 +49,7 @@ struct TeamHPBarView: View {
     }
 }
 
-// MARK: - Enemy HP bars (10 discrete bars)
+// MARK: Enemy HP bars (10 discrete bars)
 struct EnemyHPBarsView: View {
     @ObservedObject var enemy: Enemy
     let shake: Bool
