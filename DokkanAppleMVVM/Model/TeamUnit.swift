@@ -4,7 +4,7 @@
 import Foundation
 import SwiftUI
 
-// MARK: - SA Effect
+// MARK: SA Effect
 enum SAEffect: String {
     case stackAtkOneTurn   = "ATK +1T"
     case stackAtkInfinite  = "ATK +∞"
@@ -13,7 +13,7 @@ enum SAEffect: String {
     case none              = "—"
 }
 
-// MARK: - Unit Archetype
+// MARK: Unit Archetype
 enum UnitArchetype: String, CaseIterable {
     case stackerAA    = "Stacker AA"
     case dodger       = "Dodger"
@@ -24,7 +24,7 @@ enum UnitArchetype: String, CaseIterable {
     case buildByHit   = "Build"
 }
 
-// MARK: - TeamUnit
+// MARK: TeamUnit
 class TeamUnit: Sprite, Identifiable, ObservableObject {
     let id = UUID()
     let archetype: UnitArchetype
@@ -117,7 +117,7 @@ class TeamUnit: Sprite, Identifiable, ObservableObject {
     }
 }
 
-// MARK: - Unit Factory
+// MARK: Unit Factory
 struct UnitFactory {
     static func makeTeam() -> [TeamUnit] {
         let dummy = CGPoint(x: 0, y: 0)
