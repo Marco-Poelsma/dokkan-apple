@@ -29,16 +29,16 @@ struct BattleView: View {
     
     var body: some View {
         ZStack {
-            // ── Background ────────────────────────────────────────────────
+            // MARK: Background
             backgroundGradient
             
-            // ── SA flash ─────────────────────────────────────────────────
+            // MARK: SA flash
             if isSAFlashing {
                 SAFlashView(color: Color.yellow)
                     .allowsHitTesting(false)
             }
             
-            // ── Main layout ───────────────────────────────────────────────
+            // MARK: Main layout
             VStack(spacing: 0) {
                 // Botón EXIT en la parte superior
                 HStack {
@@ -70,34 +70,34 @@ struct BattleView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 24)
                 
-                // Enemy section
+                // MARK: Enemy section
                 enemySection
                     .padding(.top, 10)
                     .padding(.horizontal, 14)
                 
                 Spacer()
                 
-                // Event feed
+                // MARK: Event feed
                 EventFeedView(event: vm.animatingEvent)
                     .frame(maxWidth: .infinity)
                 
                 Spacer()
                 
-                // Queue units row
+                // MARK: Queue units row
                 queueRow
                     .padding(.horizontal, 10)
                     .padding(.bottom, 8)
                 
-                // Team HP
+                // MARK: Team HP
                 teamHPSection
                     .padding(.horizontal, 14)
                     .padding(.bottom, 12)
             }
             
-            // ── Active units ─────────────────────────────────
+            // MARK: Active units
             activeUnitsLayer
             
-            // ── Attack slot indicators ────────────────────────────────────
+            // MARK: Attack slot indicators
             AttackSlotIndicatorRow(
                 screenWidth: screenWidth,
                 bottomY: unitBottomY
@@ -105,17 +105,17 @@ struct BattleView: View {
             .environmentObject(vm)
             .allowsHitTesting(false)
             
-            // ── Start Turn button ─────────────────────────────────────────
+            // MARK: Start Turn button
             if case .idle = vm.phase {
                 startTurnButton
             }
             
-            // ── Game Over overlay ─────────────────────────────────────────
+            // MARK: Game Over overlay
             if case .gameOver(let won) = vm.phase {
                 gameOverOverlay(won: won)
             }
             
-            // ── Wave Transition Overlay ─────────────────────────────────────────
+            // MARK: Wave Transition Overlay
             if vm.showWaveTransition {
                 VStack {
                     Spacer()
@@ -141,7 +141,7 @@ struct BattleView: View {
         .navigationBarHidden(true)
     }
     
-    // MARK: - Background
+    // MARK: Background
     var backgroundGradient: some View {
         LinearGradient(
             gradient: Gradient(colors: [
@@ -155,7 +155,7 @@ struct BattleView: View {
         .ignoresSafeArea()
     }
     
-    // MARK: - Enemy section
+    // MARK: Enemy section
     var enemySection: some View {
         VStack(spacing: 8) {
             HStack {
@@ -226,7 +226,7 @@ struct BattleView: View {
         }
     }
     
-    // MARK: - Active units drag layer
+    // MARK: Active units drag layer
     var activeUnitsLayer: some View {
         ZStack {
             ForEach(Array(vm.activeUnits.enumerated()), id: \.element.id) { (slotIdx, unit) in
@@ -257,7 +257,7 @@ struct BattleView: View {
         }
     }
     
-    // MARK: - Queue row
+    // MARK: Queue row
     var queueRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 6) {
@@ -282,7 +282,7 @@ struct BattleView: View {
         .cornerRadius(10)
     }
     
-    // MARK: - Team HP section
+    // MARK: Team HP section
     var teamHPSection: some View {
         TeamHPBarView(
             current: vm.teamHP,
@@ -295,7 +295,7 @@ struct BattleView: View {
         .cornerRadius(12)
     }
     
-    // MARK: - Start Turn button
+    // MARK: Start Turn button
     var startTurnButton: some View {
         VStack {
             Spacer()
@@ -354,9 +354,6 @@ struct BattleView: View {
         }
         .allowsHitTesting(true)
     }
-    
-    // En BattleView.swift, modifica el gameOverOverlay:
-
     func gameOverOverlay(won: Bool) -> some View {
         ZStack {
             Color.black.opacity(0.9).ignoresSafeArea()
