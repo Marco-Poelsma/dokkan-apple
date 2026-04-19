@@ -103,7 +103,7 @@ struct MainMenuView: View {
     }
 }
 
-// MARK: - Background View Animado
+// MARK: Background View Animado
 struct BackgroundView: View {
     @State private var animateGradient = false
     
