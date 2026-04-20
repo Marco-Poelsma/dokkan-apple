@@ -318,7 +318,7 @@ class BattleViewModel: ObservableObject {
             self.showWaveTransition = false
         }
         
-        let multiplier = pow(1.5, Double(currentWave - 1))
+        let multiplier = pow(1.15, Double(currentWave - 1))
         let baseEnemy = Enemy.defaultEnemy()
         
         // Crear nuevo enemigo con estadísticas aumentadas
