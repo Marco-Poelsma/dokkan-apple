@@ -192,9 +192,15 @@ class BattleViewModel: ObservableObject {
         animatingEvent = event
         lastEventText = event.description
         
-        applyEvent(event)
+        let shouldStop = applyEvent(event)
         
         if case .gameOver = phase {
+            animatingEvent = nil
+            return
+        }
+        
+        // Si el enemigo murió o game over, no continuar con más eventos
+        if shouldStop {
             animatingEvent = nil
             return
         }
@@ -220,8 +226,8 @@ class BattleViewModel: ObservableObject {
         }
     }
     
-    // MARK: Apply Event with Sounds
-    private func applyEvent(_ event: BattleEvent) {
+    // MARK: Apply Event with Sounds - Retorna true si se debe detener la cadena de eventos
+    private func applyEvent(_ event: BattleEvent) -> Bool {
         switch event.kind {
         case .unitAttacks(let unit, let dmg, let type, let isCrit, let dodged):
             if !dodged {
@@ -247,6 +253,12 @@ class BattleViewModel: ObservableObject {
                 soundManager.playSound(named: "dodge", volume: 80.0)
             }
             
+            // Verificar si el enemigo murió después de este ataque
+            if enemy.isDead {
+                spawnNextEnemy()
+                return true  // Detener la cadena de eventos
+            }
+            
         case .enemyAttacks(_, let target, let dmg, let dodged):
             if !dodged {
                 teamHP = max(0, teamHP - dmg)
@@ -255,8 +267,17 @@ class BattleViewModel: ObservableObject {
             } else {
                 soundManager.playSound(named: "dodge", volume: 80.0)
             }
+            
+            // Verificar si el equipo murió
+            if teamHP <= 0 {
+                phase = .gameOver(won: false)
+                soundManager.playSound(named: "death", volume: 1.0)
+                soundManager.setBGMVolume(0.2)
+                return true  // Game over, detener eventos
+            }
         }
-        checkGameOver()
+        
+        return false  // No hubo muerte que requiera detener la cadena
     }
     
     private func triggerEnemyHit() {
@@ -276,18 +297,6 @@ class BattleViewModel: ObservableObject {
             self.showTeamHit = false
             self.hitUnitId = nil
             self.teamShake = false
-        }
-    }
-    
-    private func checkGameOver() {
-        if enemy.isDead {
-            spawnNextEnemy()
-        } else if teamHP <= 0 {
-            phase = .gameOver(won: false)
-            soundManager.playSound(named: "death", volume: 1.0)
-            
-            // Opcional: Bajar volumen del BGM o pausarlo en Game Over
-            soundManager.setBGMVolume(0.2)
         }
     }
     
@@ -341,10 +350,11 @@ class BattleViewModel: ObservableObject {
         // Restaurar volumen del BGM si estaba bajo
         soundManager.setBGMVolume(0.5)
         
+        // Cambiar a idle si aún estamos en fase resolving
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }
-            if case .resolving = self.phase {
-                self.finalizeTurn()
+            if case .resolving = self.phase, self.teamHP > 0 {
+                self.phase = .idle
             }
         }
     }
